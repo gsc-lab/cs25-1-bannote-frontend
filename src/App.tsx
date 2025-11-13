@@ -13,24 +13,36 @@ import {
 } from "./pages/studentclass";
 import SchoolIcon from "@mui/icons-material/School";
 import ClassIcon from "@mui/icons-material/Class";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import Router from "./Router";
+import { authProvider } from "./providers/authProvider";
+import { LoginPage } from "./pages/LoginPage";
 
 export const App = () => (
-  <Admin layout={AppLayout} dataProvider={dataProvider}>
-    <Resource
-      name="departments"
-      list={DepartmentList}
-      create={DepartmentCreate}
-      edit={DepartmentEdit}
-      recordRepresentation="department_code"
-      icon={SchoolIcon}
-    />
-    <Resource
-      name="studentclasses"
-      list={StudentClassList}
-      create={StudentClassCreate}
-      edit={StudentClassEdit}
-      recordRepresentation="student_class_code"
-      icon={ClassIcon}
-    />
-  </Admin>
+  <GoogleOAuthProvider clientId="616869349585-5kkpb0gvqlaq3kl4l67n6tq1nt6fee32.apps.googleusercontent.com">
+    <Admin
+      layout={AppLayout}
+      dataProvider={dataProvider}
+      authProvider={authProvider}
+      loginPage={LoginPage}
+    >
+      <Resource
+        name="departments"
+        list={DepartmentList}
+        create={DepartmentCreate}
+        edit={DepartmentEdit}
+        recordRepresentation="department_code"
+        icon={SchoolIcon}
+      />
+      <Resource
+        name="studentclasses"
+        list={StudentClassList}
+        create={StudentClassCreate}
+        edit={StudentClassEdit}
+        recordRepresentation="student_class_code"
+        icon={ClassIcon}
+      />
+      <Router />
+    </Admin>
+  </GoogleOAuthProvider>
 );
