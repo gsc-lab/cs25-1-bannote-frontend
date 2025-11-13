@@ -18,10 +18,9 @@ export const authProvider: AuthProvider = {
   },
 
   checkAuth: () => {
-    // localStorage에 사용자 정보가 있으면 로그인된 것으로 간주 (임시)
+    // sessionStorage에 사용자 정보가 있으면 로그인된 것으로 간주
     // 실제 토큰 검증은 API 요청 시 백엔드에서 HttpOnly 쿠키로 처리
     const user = sessionStorage.getItem("user");
-    console.log("checkAuth - user:", user);
     return user ? Promise.resolve() : Promise.reject();
   },
 
@@ -34,5 +33,17 @@ export const authProvider: AuthProvider = {
       return Promise.reject();
     }
     return Promise.resolve();
+  },
+
+  getIdentity: () => {
+    const userStr = sessionStorage.getItem("user");
+    if (!userStr) return Promise.reject();
+
+    const user = JSON.parse(userStr);
+    return Promise.resolve({
+      id: user.user_code,
+      fullName: `${user.family_name} ${user.given_name}`,
+      avatar: user.profile_image_url,
+    });
   },
 };
