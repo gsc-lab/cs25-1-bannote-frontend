@@ -41,10 +41,18 @@ export const dataProvider: DataProvider = {
   getList: (resource, params) => {
     const { page, perPage } = params.pagination;
     // const { field, order } = params.sort;
-    const query = {
+    const query: any = {
       page: page - 1,
       size: perPage,
     };
+
+    // 필터 추가
+    if (params.filter) {
+      Object.keys(params.filter).forEach((key) => {
+        query[key] = params.filter[key];
+      });
+    }
+
     const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
     return httpClient(url).then(({ json }) => {
@@ -68,7 +76,7 @@ export const dataProvider: DataProvider = {
     const query = {
       filter: JSON.stringify({ id: params.ids }),
     };
-    const url = `${apiUrl}/${resource}?${stringify(query)}`;
+    const url = `${apiUrl}/${resource}/many?${stringify(query)}`;
     return httpClient(url).then(({ json }) => ({ data: json }));
   },
 
