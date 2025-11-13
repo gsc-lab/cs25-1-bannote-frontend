@@ -2,6 +2,7 @@ import {
   AutocompleteInput,
   Create,
   DataTable,
+  DeleteButton,
   Edit,
   EditButton,
   List,
@@ -54,6 +55,9 @@ export const StudentClassList = () => {
         <DataTable.Col source="status" />
         <DataTable.Col>
           <EditButton />
+        </DataTable.Col>
+        <DataTable.Col>
+          <DeleteButton />
         </DataTable.Col>
       </DataTable>
     </List>

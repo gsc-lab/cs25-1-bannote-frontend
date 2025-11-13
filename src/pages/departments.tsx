@@ -1,6 +1,7 @@
 import {
   Create,
   DataTable,
+  DeleteButton,
   Edit,
   EditButton,
   List,
@@ -16,6 +17,9 @@ export const DepartmentList = () => {
         <DataTable.Col source="name" />
         <DataTable.Col>
           <EditButton />
+        </DataTable.Col>
+        <DataTable.Col>
+          <DeleteButton />
         </DataTable.Col>
       </DataTable>
     </List>
