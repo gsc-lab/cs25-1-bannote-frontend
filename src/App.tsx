@@ -11,8 +11,10 @@ import {
   StudentClassEdit,
   StudentClassList,
 } from "./pages/studentclass";
+import { UserCreate, UserEdit, UserList } from "./pages/Users";
 import SchoolIcon from "@mui/icons-material/School";
 import ClassIcon from "@mui/icons-material/Class";
+import PersonIcon from "@mui/icons-material/Person";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Router from "./Router";
 import { authProvider } from "./providers/authProvider";
@@ -41,6 +43,14 @@ export const App = () => (
         edit={StudentClassEdit}
         recordRepresentation="student_class_code"
         icon={ClassIcon}
+      />
+      <Resource
+        name="users"
+        list={UserList}
+        create={UserCreate}
+        edit={UserEdit}
+        recordRepresentation="user_code"
+        icon={PersonIcon}
       />
       <Router />
     </Admin>
