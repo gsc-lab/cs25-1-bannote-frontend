@@ -15,7 +15,7 @@ const httpClient = (url: string, options: fetchUtils.Options = {}) => {
 // 리소스별 ID 필드 매핑
 const ID_FIELD_MAP: Record<string, string> = {
   departments: "department_code",
-  studentclass: "student_class_code",
+  studentclasses: "student_class_code",
   users: "user_code",
   // 필요한 리소스 추가
 };
