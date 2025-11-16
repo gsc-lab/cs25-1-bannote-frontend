@@ -1,8 +1,7 @@
 import { DataProvider, fetchUtils } from "react-admin";
 import { stringify } from "query-string";
 
-// const apiUrl = "http://210.101.236.160:8201/api";
-const apiUrl = "http://localhost:8080/api";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 // 쿠키를 자동으로 포함하는 httpClient
 const httpClient = (url: string, options: fetchUtils.Options = {}) => {
