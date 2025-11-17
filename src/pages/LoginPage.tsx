@@ -4,6 +4,8 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useState } from "react";
 import { setUserSession } from "../utils/auth";
 
+import { Box, Card, Typography, CircularProgress } from "@mui/material";
+
 export const LoginPage = () => {
   const notify = useNotify();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -19,7 +21,7 @@ export const LoginPage = () => {
       // TODO: 백엔드 요청 axios로 변경
       const response = await fetch(
         `${apiUrl}/auth/code/google?credential=${credential}`,
-        { credentials: "include" },
+        { credentials: "include" }
       );
 
       const data = await response.json();
@@ -27,7 +29,9 @@ export const LoginPage = () => {
       // 회원가입이 필요한 경우 (백엔드에서 exists: false 응답)
       if (!data.exists) {
         // credential 토큰을 URL parameter로 전달
-        window.location.href = `/#/register?credential=${encodeURIComponent(credential)}`;
+        window.location.href = `/#/register?credential=${encodeURIComponent(
+          credential
+        )}`;
         return;
       }
 
@@ -52,18 +56,65 @@ export const LoginPage = () => {
 
   return (
     <GoogleOAuthProvider clientId={googleClientId}>
-      <div>
-        <h1>Google Login</h1>
-        {!isProcessing && (
-          <GoogleLoginButton
-            onSuccess={handleGoogleSuccess}
-            onError={() => {
-              notify("Login failed");
-            }}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+          backgroundColor: "#FEF6E4",
+          p: 2,
+        }}
+      >
+        <Card
+          sx={{
+            width: "100%",
+            maxWidth: 380,
+            p: 4,
+            borderRadius: 3,
+            boxShadow: 6,
+            border: "1px solid #172C66",
+            textAlign: "center",
+            backgroundColor: "white",
+          }}
+        >
+          {/* Logo */}
+          <img
+            src="https://raw.githubusercontent.com/Saaatsuki/BanNote_Practice/main/frontend/src/assets/BanNote-logo.png"
+            alt="BanNote Logo"
+            style={{ width: "100%", borderRadius: 8, marginBottom: 16 }}
           />
-        )}
-        {isProcessing && <div>Processing...</div>}
-      </div>
+
+          <Typography
+            variant="h6"
+            sx={{
+              mb: 3,
+              color: "#172C66",
+              fontWeight: 600,
+            }}
+          >
+            Google 로그인
+          </Typography>
+
+          {!isProcessing && (
+            <GoogleLoginButton
+              onSuccess={handleGoogleSuccess}
+              onError={() => {
+                notify("Login failed");
+              }}
+            />
+          )}
+
+          {isProcessing && (
+            <Box sx={{ mt: 2 }}>
+              <CircularProgress sx={{ color: "#172C66" }} />
+              <Typography sx={{ mt: 1, color: "#172C66" }}>
+                Processing...
+              </Typography>
+            </Box>
+          )}
+        </Card>
+      </Box>
     </GoogleOAuthProvider>
   );
 };
