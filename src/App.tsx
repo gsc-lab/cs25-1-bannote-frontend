@@ -20,6 +20,7 @@ import { authProvider } from "./providers/authProvider";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import theme from "./theme";
+import { AllowedDomainCreate, AllowedDomainList } from "./pages/AllowedDomains";
 
 export const App = () => (
   <Admin
@@ -52,6 +53,11 @@ export const App = () => (
       edit={UserEdit}
       recordRepresentation="user_code"
       icon={PersonIcon}
+    />
+    <Resource
+      name="alloweddomains"
+      list={AllowedDomainList}
+      create={AllowedDomainCreate}
     />
     <CustomRoutes noLayout>
       <Route path="/register" element={<RegisterPage />} />
