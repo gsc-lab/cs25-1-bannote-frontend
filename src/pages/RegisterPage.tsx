@@ -281,11 +281,20 @@ const [classes, setClasses] = useState<any[]>([]);
                 value={userFamilyname}
                 onChange={(e) => setUserFamilyname(e.target.value)}
                 error={errors.userFamilyname}
-                helperText={errors.userFamilyname ? "성을 입력해주세요 (Family Name)" : ""}
+                helperText={errors.userFamilyname ? "성을 입력해주세요" : ""}
+                InputLabelProps={{
+                  sx: {
+                    color: navy,
+                    fontWeight: 500, // 少し太く
+                    "&.Mui-focused": {
+                      color: navy,
+                      fontWeight: 600, // フォーカス時は少し太め
+                    },
+                  },
+                }}
                 sx={{
                   flex: 1,
                   bgcolor: "white",
-                  "& .MuiInputLabel-root": { color: navy },
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": { borderColor: navy },
                     "&:hover fieldset": { borderColor: navy },
@@ -300,11 +309,20 @@ const [classes, setClasses] = useState<any[]>([]);
                 value={userGivenname}
                 onChange={(e) => setUserGivenname(e.target.value)}
                 error={errors.userGivenname}
-                helperText={errors.userGivenname ? "이름을 입력해주세요 (Given Name)" : ""}
+                helperText={errors.userGivenname ? "이름을 입력해주세요" : ""}
+                InputLabelProps={{
+                  sx: {
+                    color: navy,
+                    fontWeight: 500, // 少し太く
+                    "&.Mui-focused": {
+                      color: navy,
+                      fontWeight: 600, // フォーカス時は少し太め
+                    },
+                  },
+                }}
                 sx={{
                   flex: 1,
                   bgcolor: "white",
-                  "& .MuiInputLabel-root": { color: navy },
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": { borderColor: navy },
                     "&:hover fieldset": { borderColor: navy },
@@ -324,6 +342,17 @@ const [classes, setClasses] = useState<any[]>([]);
               onChange={(e) => setStudentNumber(e.target.value)}
               error={errors.studentNumber}
               helperText={errors.studentNumber ? "학생 번호를 입력해주세요" : ""}
+              InputLabelProps={{
+                sx: {
+                  color: navy,
+                  fontWeight: 500, // 少し太く
+                  "&.Mui-focused": {
+                    color: navy,
+                    fontWeight: 600, // フォーカス時は少し太め
+                  },
+                },
+              }}
+
               sx={{
                 mb: 2,
                 bgcolor: "white",
@@ -337,91 +366,111 @@ const [classes, setClasses] = useState<any[]>([]);
               }}
             />
 
-  {/* 학과 */}
-  <FormControl fullWidth error={errors.department} sx={{ mb: 2 }}>
-    <InputLabel
-      id="department-label"
-      sx={{
-        color: errors.department ? red : navy,
-        "&.Mui-focused": { color: errors.department ? red : navy },
-      }}
-    >
-      학과
-    </InputLabel>
-    <Select
-      labelId="department-label"
-      value={department}
-      onChange={(e) => setDepartment(e.target.value)}
-      label="학과"  // ラベル浮く
-      sx={{
-        backgroundColor: "white",
-        color: navy,
-        "& .MuiOutlinedInput-notchedOutline": { borderColor: navy },
-        "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: navy },
-        "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: navy },
-        "& .MuiSelect-icon": { color: navy },
-      }}
-      MenuProps={{
-        PaperProps: {
-          sx: {
-            backgroundColor: "#fefefe", // 明るい背景
-            color: navy,
-          },
-        },
-      }}
-    >
-      {departments.map((dep) => (
-        <MenuItem key={dep.id} value={dep.name}>
-          {dep.name}
-        </MenuItem>
-      ))}
-    </Select>
-  </FormControl>
+            {/* 학과 */}
+            <FormControl fullWidth error={errors.department} sx={{ mb: 2 }}>
+              <InputLabel
+                id="department-label"
+                sx={{
+                  color: errors.department ? red : navy,
+                  "&.Mui-focused": { color: errors.department ? red : navy },
+                }}
+              >
+                학과
+              </InputLabel>
+              <Select
+                labelId="department-label"
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
+                label="학과"  // ラベル浮く
 
-  {/* クラス */}
-  <FormControl
-    fullWidth
-    error={errors.className}
-    sx={{ mb: 2 }}
-    disabled={!department || classes.length === 0}
-  >
-    <InputLabel
-      id="class-label"
-      sx={{
-        color: errors.className ? red : navy,
-        "&.Mui-focused": { color: errors.className ? red : navy },
-      }}
-    >
-      반
-    </InputLabel>
-    <Select
-      labelId="class-label"
-      value={className}
-      onChange={(e) => setClassName(e.target.value)}
-      label="반"
-      sx={{
-        backgroundColor: "white",
-        color: navy,
-        "& .MuiOutlinedInput-notchedOutline": { borderColor: navy },
-        "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: navy },
-        "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: navy },
-        "& .MuiSelect-icon": { color: navy },
-      }}
-      MenuProps={{
-        PaperProps: {
-          sx: {
-            backgroundColor: "#fefefe", // 明るい背景
-          },
-        },
-      }}
-    >
-      {classes.map((cls) => (
-        <MenuItem key={cls.id} value={cls.name}>
-          {cls.name}
-        </MenuItem>
-      ))}
-    </Select>
-  </FormControl>
+                sx={{
+                  backgroundColor: "white",
+                  color: navy,
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: navy,
+                    borderWidth: 1,            // 通常時の太さ
+                    transition: "all 0.2s ease", // アニメーション
+                  },
+                  "&:hover .MuiOutlinedInput-notchedOutline": {
+                    borderColor: navy,
+                  },
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderColor: navy,          // 色は変えない
+                    borderWidth: 2,             // フォーカス時に太く
+                  },
+                  "& .MuiSelect-icon": { color: navy },
+                }}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      backgroundColor: "#fefefe", // 明るい背景
+                      color: navy,
+                    },
+                  },
+                }}
+              >
+                {departments.map((dep) => (
+                  <MenuItem key={dep.id} value={dep.name}>
+                    {dep.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            {/* クラス */}
+            <FormControl
+              fullWidth
+              error={errors.className}
+              sx={{ mb: 2 }}
+              disabled={!department || classes.length === 0}
+            >
+              <InputLabel
+                id="class-label"
+                sx={{
+                  color: errors.className ? red : navy,
+                  "&.Mui-focused": { color: errors.className ? red : navy },
+                }}
+              >
+                반
+              </InputLabel>
+              <Select
+                labelId="class-label"
+                value={className}
+                onChange={(e) => setClassName(e.target.value)}
+                label="반"
+                sx={{
+                  backgroundColor: "white",
+                  color: navy,
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: navy,
+                    borderWidth: 1,            // 通常時の太さ
+                    transition: "all 0.2s ease", // アニメーション
+                  },
+                  "&:hover .MuiOutlinedInput-notchedOutline": {
+                    borderColor: navy,
+                  },
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderColor: navy,          // 色は変えない
+                    borderWidth: 2,             // フォーカス時に太く
+                  },
+                  "& .MuiSelect-icon": { color: navy },
+                }}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      backgroundColor: "#fefefe", // 明るい背景
+                      color:navy
+                    },
+                  },
+                }}
+              >
+                {classes.map((cls) => (
+                  <MenuItem key={cls.id} value={cls.name}>
+                    {cls.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
 
             {/* 등록ボタン */}
