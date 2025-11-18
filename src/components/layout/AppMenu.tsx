@@ -5,5 +5,6 @@ export const AppMenu = () => (
     <Menu.ResourceItem name="departments" />
     <Menu.ResourceItem name="studentclasses" />
     <Menu.ResourceItem name="users" />
+    <Menu.ResourceItem name="alloweddomains" />
   </Menu>
 );

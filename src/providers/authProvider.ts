@@ -13,12 +13,12 @@ export const authProvider: AuthProvider = {
 
   checkAuth: () => {
     // 토큰의 만료 시간 확인
-    if (isTokenValid()) {
+    if (!isTokenValid()) {
       return Promise.reject(new Error("Session expired"));
     }
 
     // 로컬스토리지에서 사용자 정보 확인
-    if (getUserSession()) {
+    if (!getUserSession()) {
       return Promise.reject(new Error("User not found"));
     }
 
@@ -31,7 +31,6 @@ export const authProvider: AuthProvider = {
   checkError: (error) => {
     const status = error.status;
     if (status === 401 || status === 403) {
-      sessionStorage.removeItem("user");
       return Promise.reject();
     }
     return Promise.resolve();
