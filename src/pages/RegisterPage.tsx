@@ -15,6 +15,10 @@ import {
   Button,
   OutlinedInput
 } from "@mui/material";
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+import Slide from "@mui/material/Slide";
 
 interface UserInfo {
   email: string;
@@ -31,7 +35,7 @@ export const RegisterPage = () => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [error, setError] = useState<string>("");
 
-  const [allowed, setAllowed] = useState<boolean>(false);
+  const [allowed, setAllowed] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
 
   // Pill tabs
@@ -44,6 +48,7 @@ export const RegisterPage = () => {
   const [studentNumber, setStudentNumber] = useState("");
   const [department, setDepartment] = useState("");
   const [className, setClassName] = useState("");
+  const [success, setSuccess] = useState(false);
   const [profileImage, setProfileImage] = useState<string>("");
   const [errors, setErrors] = useState({
     userFamilyname: false,
@@ -57,8 +62,27 @@ export const RegisterPage = () => {
 const [departments, setDepartments] = useState<any[]>([]);
 const [classes, setClasses] = useState<any[]>([]);
 
-  const navy = "#172C66";
-  const red = "#A10000";
+const navy = "#172C66";
+const red = "#A10000";
+
+const maillErrorMsg = (
+  <Typography
+    sx={{
+      color: red,
+      padding: "2px",
+      marginTop: "8px",
+      display: "flex",
+      alignItems: "center",
+      gap: "4px",
+      fontSize: "14px",
+      textAlign: "center",
+      justifyContent: "center",
+    }}
+  >
+    <ErrorOutlineIcon fontSize="small" />
+    회원가입 요청 후 관리자의 승인이 필요합니다.
+  </Typography>
+);
 
   // 初期ユーザー情報・許可チェック
   useEffect(() => {
@@ -148,28 +172,61 @@ const [classes, setClasses] = useState<any[]>([]);
     fetchClasses();
   }, [department, departments]);
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     const newErrors = {
       userFamilyname: !userFamilyname,
       userGivenname: !userGivenname,
       studentNumber: !studentNumber,
-      department: !department,
-      className: !className,
+      department: !department,          // 学科は学生・職員共に必須
+      className: value === 0 ? !className : false, // 学生のみクラス必須
     };
     setErrors(newErrors);
 
     if (Object.values(newErrors).some((v) => v)) return;
 
-    console.log({
-      userFamilyname,
-      userGivenname,
-      studentNumber,
-      department,
-      className,
-      profileImage,
-    });
-    alert("등록 완료!");
+    setSuccess(true);
+
+    // credential取得
+    const credential = getCredentialFromURL();
+    if (!credential) {
+      console.error("No credential found");
+      return;
+    }
+
+    // department_code と student_class_code を対応するIDに変換
+    const dep = departments.find((d) => d.name === department);
+    const cls = classes.find((c) => c.name === className);
+
+    const payload = {
+      credential,
+      user_code: studentNumber,
+      user_email: userInfo?.email,
+      family_name: userFamilyname,
+      given_name: userGivenname,
+      user_type: value === 0 ? "student" : "staff",
+      profile: profileImage,
+      student_class_code: value === 0 ? (cls?.id || null) : null,
+      department_code: dep?.id || null,
+    };
+
+    try {
+      const response = await fetch(`${apiUrl}/users/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("送信成功:", result);
+    } catch (err) {
+      console.error("送信失敗:", err);
+    }
   };
+
 
   if (error) {
     return (
@@ -211,6 +268,7 @@ const [classes, setClasses] = useState<any[]>([]);
           >
             {userInfo.email}
           </Typography>
+          {allowed ? null : maillErrorMsg}
 
           {/* Pill tabs */}
           <Box sx={{ backgroundColor: navy, p: 0.5, borderRadius: "12px", display: "flex", position: "relative", gap: 1, mt: 2, mx: 2 }}>
@@ -230,7 +288,19 @@ const [classes, setClasses] = useState<any[]>([]);
             {tabs.map((label, index) => (
               <Box
                 key={label}
-                onClick={() => setValue(index)}
+                onClick={() => {
+                  setValue(index);
+                  if (index === 1) { 
+                    // 직원
+                    setDepartment("");
+                    setClassName("");
+                    setErrors((prev) => ({
+                      ...prev,
+                      department: false,
+                      className: false,
+                    }));
+                  }
+                }}
                 sx={{
                   flex: 1,
                   textAlign: "center",
@@ -250,7 +320,7 @@ const [classes, setClasses] = useState<any[]>([]);
 
           <CardContent>
             {/* Profile image */}
-            <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
+            <Box sx={{ display: "flex", alignItems: "center" , justifyContent:"center" , gap: 5, mb: 3 }}>
               <Avatar src={profileImage} alt={userInfo.name} sx={{ width: 80, height: 80 }} />
 
               <input
@@ -336,67 +406,73 @@ const [classes, setClasses] = useState<any[]>([]);
             {/* 학생번호 */}
             <TextField
               fullWidth
-              label="학생 번호"
+              label={value === 1 ? "직원 번호" : "학생 번호"} 
               variant="outlined"
               value={studentNumber}
-              onChange={(e) => setStudentNumber(e.target.value)}
+              // onChange={(e) => setStudentNumber(e.target.value)}
+              onChange={(e) => {
+                const onlyNumbers = e.target.value.replace(/[^0-9]/g, ""); 
+                setStudentNumber(onlyNumbers);
+              }}
               error={errors.studentNumber}
-              helperText={errors.studentNumber ? "학생 번호를 입력해주세요" : ""}
+              // helperText={errors.studentNumber ? "학생 번호를 입력해주세요" : ""}
               InputLabelProps={{
                 sx: {
-                  color: navy,
-                  fontWeight: 500, // 少し太く
-                  "&.Mui-focused": {
-                    color: navy,
-                    fontWeight: 600, // フォーカス時は少し太め
-                  },
+                  color: errors.studentNumber ? red : navy, // ラベル色
+                  "&.Mui-focused": { color: errors.studentNumber ? red : navy },
+                  "&.Mui-error": { color: red },            // error状態でも赤
                 },
               }}
-
               sx={{
-                mb: 2,
-                bgcolor: "white",
-                "& .MuiInputLabel-root": { color: navy },
+                marginBottom: 2,
                 "& .MuiOutlinedInput-root": {
-                  "& fieldset": { borderColor: navy },
-                  "&:hover fieldset": { borderColor: navy },
-                  // "&.Mui-focused fieldset": { borderColor: navy },
-                  "& input": { color: navy },
+                  backgroundColor: "white" !,  
+                  "& fieldset": { borderColor: errors.studentNumber ? red : navy },
+                  "&.Mui-focused fieldset": { borderColor: errors.studentNumber ? red : navy },
+                  "&.Mui-error fieldset": { borderColor: red }, // エラー時の枠線赤
+                },
+                "& .MuiFormHelperText-root": {
+                  color: red,  // helperText の赤色
                 },
               }}
             />
 
+
+
             {/* 학과 */}
-            <FormControl fullWidth error={errors.department} sx={{ mb: 2 }}>
+            <FormControl 
+              fullWidth error={errors.department} 
+              sx={{ mb: 2 }} 
+              variant="outlined" 
+            >
               <InputLabel
                 id="department-label"
                 sx={{
                   color: errors.department ? red : navy,
                   "&.Mui-focused": { color: errors.department ? red : navy },
+                  "&.Mui-error": { color: red },  // エラー時ラベル赤
                 }}
               >
                 학과
               </InputLabel>
               <Select
+                
                 labelId="department-label"
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
                 label="학과"  // ラベル浮く
-
                 sx={{
                   backgroundColor: "white",
                   color: navy,
                   "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: navy,
-                    borderWidth: 1,            // 通常時の太さ
-                    transition: "all 0.2s ease", // アニメーション
+                    borderColor: errors.department ? red : navy, // 枠線色
                   },
                   "&:hover .MuiOutlinedInput-notchedOutline": {
                     borderColor: navy,
                   },
                   "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                    borderColor: navy,          // 色は変えない
-                    borderWidth: 2,             // フォーカス時に太く
+                    borderColor: errors.department ? red : navy,
+                    borderWidth: 2,
                   },
                   "& .MuiSelect-icon": { color: navy },
                 }}
@@ -422,7 +498,9 @@ const [classes, setClasses] = useState<any[]>([]);
               fullWidth
               error={errors.className}
               sx={{ mb: 2 }}
-              disabled={!department || classes.length === 0}
+              disabled={value === 1 || !department || classes.length === 0}
+              variant="outlined" 
+              
             >
               <InputLabel
                 id="class-label"
@@ -431,7 +509,8 @@ const [classes, setClasses] = useState<any[]>([]);
                   "&.Mui-focused": { color: errors.className ? red : navy },
                 }}
               >
-                반
+                {value === 1 ? "직원은 반을 선택할 필요 없습니다": "반"}
+                
               </InputLabel>
               <Select
                 labelId="class-label"
@@ -483,6 +562,30 @@ const [classes, setClasses] = useState<any[]>([]);
               등록
             </Button>
           </CardContent>
+          {success && (
+            <Slide in={success} direction="down" mountOnEnter unmountOnExit>
+              <Stack
+                sx={{
+                  position: "fixed",   
+                  top: 30,
+                  left: "45%",           // ← 画面中央に変更
+                  transform: "translateX(-50%)", // ← X軸中央に移動
+                  zIndex: 1300,
+                  width: "auto",
+                  maxWidth: 400,
+                }}
+              >
+                <Alert
+                  variant="outlined"
+                  severity="success"
+                  sx={{ bgcolor: "white", color: navy, fontWeight: 500 ,borderColor: navy,  }}
+                >
+                  등록이 완료되었습니다!
+                </Alert>
+              </Stack>
+            </Slide>
+          )}
+
         </Card>
       </Box>
     </Box>
