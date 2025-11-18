@@ -29,10 +29,15 @@ export const AllowedDomainList = () => {
 };
 
 export const AllowedDomainCreate = () => {
+  const transform = (data: any) => ({
+    ...data,
+    id: data.domain, // domain 값을 id로도 사용
+  });
+
   return (
-    <Create>
+    <Create transform={transform}>
       <SimpleForm>
-        <TextInput source="domain" />
+        <TextInput source="domain" label="도메인" />
       </SimpleForm>
     </Create>
   );
