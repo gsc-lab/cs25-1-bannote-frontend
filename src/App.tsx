@@ -19,6 +19,7 @@ import { Route } from "react-router-dom";
 import { authProvider } from "./providers/authProvider";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
+import theme from "./theme";
 
 export const App = () => (
   <Admin
@@ -26,6 +27,7 @@ export const App = () => (
     dataProvider={dataProvider}
     authProvider={authProvider}
     loginPage={LoginPage}
+    theme={theme} // ← ここでテーマを適用
   >
     <Resource
       name="departments"
