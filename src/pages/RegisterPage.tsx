@@ -31,6 +31,9 @@ interface UserInfo {
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
+
+
+
 export const RegisterPage = () => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [error, setError] = useState<string>("");
@@ -203,7 +206,7 @@ const maillErrorMsg = (
       user_email: userInfo?.email,
       family_name: userFamilyname,
       given_name: userGivenname,
-      user_type: value === 0 ? "student" : "staff",
+      user_type: value === 0 ? "student" : "employee",
       profile: profileImage,
       student_class_code: value === 0 ? (cls?.id || null) : null,
       department_code: dep?.id || null,
@@ -221,7 +224,11 @@ const maillErrorMsg = (
       }
 
       const result = await response.json();
+
       console.log("送信成功:", result);
+      setTimeout(() => {
+        window.location.href = `${apiUrl}/`;
+      }, 1000);
     } catch (err) {
       console.error("送信失敗:", err);
     }
@@ -568,7 +575,7 @@ const maillErrorMsg = (
                 sx={{
                   position: "fixed",   
                   top: 30,
-                  left: "45%",           // ← 画面中央に変更
+                  left: "10%",           // ← 画面中央に変更
                   transform: "translateX(-50%)", // ← X軸中央に移動
                   zIndex: 1300,
                   width: "auto",
@@ -580,7 +587,17 @@ const maillErrorMsg = (
                   severity="success"
                   sx={{ bgcolor: "white", color: navy, fontWeight: 500 ,borderColor: navy,  }}
                 >
-                  등록이 완료되었습니다!
+                  {allowed ? (
+                    <>
+                      등록이 완료되었습니다! <br />
+                      1초 후 홈 화면으로 이동합니다.
+                    </>
+                  ) : (
+                    <>
+                      회원가입 요청이 완료되었습니다.<br />
+                      관리자가 승인할 때까지 기다려주세요
+                    </>
+                  )}
                 </Alert>
               </Stack>
             </Slide>

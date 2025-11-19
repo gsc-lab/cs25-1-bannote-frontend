@@ -1,3 +1,5 @@
+// src/pages/Users.tsx
+
 import {
   AutocompleteInput,
   Create,
@@ -55,10 +57,15 @@ const UserFilters = [
   <ReferenceInput
     source="department_code"
     reference="departments"
-    label="학과"
     alwaysOn
+    key="department-filter"
   >
-    <AutocompleteInput optionText="name" />
+    <AutocompleteInput 
+      label="학과 코드" 
+      optionText="name" 
+      size="small"
+      sx={{ minHei1ht: 40 , minWidth: 200 , marginBottom:0.5 ,marginTop:0.5}}
+    />
   </ReferenceInput>,
   <StudentClassFilter key="student_class_filter" alwaysOn />,
   <SelectInput

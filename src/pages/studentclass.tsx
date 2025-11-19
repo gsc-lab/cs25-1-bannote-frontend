@@ -1,3 +1,4 @@
+// src/pages/studentclass.tsx
 import {
   AutocompleteInput,
   Create,
@@ -14,52 +15,63 @@ import {
   TextField,
   TextInput,
 } from "react-admin";
+// import { Box } from "@mui/material";
 
 const studentClassFilters = [
   <ReferenceInput
     source="department_code"
     reference="departments"
-    label="Department"
     alwaysOn
+    key="department-filter"
   >
-    <AutocompleteInput optionText="name" />
+    <AutocompleteInput 
+      label="학과 코드" 
+      optionText="name" 
+      size="small"
+      sx={{ minHeight: 40 , minWidth: 200 , marginBottom:0.5 ,marginTop:0.5}}
+    />
   </ReferenceInput>,
   <SelectInput
     source="status"
-    label="Status"
+    label="상태"
+    size="small"
+    sx={{ minHeight: 40 , minWidth: 80 ,marginBottom:0.5,marginTop:0.5}}
     choices={[
-      { id: "active", name: "Active" },
-      { id: "graduated", name: "Graduated" },
+      { id: "active", name: "활성" },
+      { id: "graduated", name: "졸업" },
     ]}
     alwaysOn
+    key="status-filter"
   />,
 ];
 
 export const StudentClassList = () => {
   return (
     <List filters={studentClassFilters}>
-      <DataTable rowClick={false}>
-        <DataTable.Col source="department_code" label="Department">
-          <ReferenceField
-            source="department_code"
-            reference="departments"
-            link="show"
-          >
-            <TextField source="name" />
-          </ReferenceField>
-        </DataTable.Col>
-        <DataTable.Col source="id" />
-        <DataTable.Col source="name" />
-        <DataTable.Col source="admission_year" />
-        <DataTable.Col source="graduation_year" />
-        <DataTable.Col source="status" />
-        <DataTable.Col>
-          <EditButton />
-        </DataTable.Col>
-        <DataTable.Col>
-          <DeleteButton />
-        </DataTable.Col>
-      </DataTable>
+      {/* <Box sx={{
+        width: "100%",
+        overflowX: "auto",
+        whiteSpace: "nowrap"
+      }}> */}
+        <DataTable rowClick={false}>
+          <DataTable.Col source="department_code" label="학과 이름">
+            <ReferenceField source="department_code" reference="departments" link="show">
+              <TextField source="name" />
+            </ReferenceField>
+          </DataTable.Col>
+          <DataTable.Col source="id" label="학과 크드" />
+          <DataTable.Col source="name" label="클래스" />
+          <DataTable.Col source="admission_year" label="입학년" />
+          <DataTable.Col source="graduation_year" label="졸업년" />
+          <DataTable.Col source="status" label="상태" />
+          <DataTable.Col>
+            <EditButton />
+          </DataTable.Col>
+          <DataTable.Col>
+            <DeleteButton />
+          </DataTable.Col>
+        </DataTable>
+      {/* </Box> */}
     </List>
   );
 };
@@ -70,9 +82,7 @@ export const StudentClassEdit = () => {
       <SimpleForm>
         <TextInput
           source="id"
-          slotProps={{
-            input: { disabled: true },
-          }}
+          disabled
         />
         <TextInput source="name" />
         <ReferenceInput source="department_code" reference="departments">
