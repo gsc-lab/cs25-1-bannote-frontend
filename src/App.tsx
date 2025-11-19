@@ -13,7 +13,6 @@ import {
   StudentClassList,
 } from "./pages/studentclass";
 import { UserCreate, UserEdit, UserList } from "./pages/Users";
-import SchoolIcon from "@mui/icons-material/School";
 import ClassIcon from "@mui/icons-material/Class";
 import PersonIcon from "@mui/icons-material/Person";
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
@@ -23,7 +22,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import theme from "./theme";
 import { AllowedDomainCreate, AllowedDomainList } from "./pages/AllowedDomains";
-import { GroupItem } from "./components/schedule/GroupItem"
+import { GroupItemList } from "./components/schedule/GroupItemList"
 
 export const App = () => (
   <Admin
@@ -39,7 +38,7 @@ export const App = () => (
       create={DepartmentCreate}
       edit={DepartmentEdit}
       recordRepresentation="department_code"
-      icon={SchoolIcon}
+      icon={PlayArrowRoundedIcon}
       options={{ label: "학과" }}
     />
     <Resource
@@ -70,7 +69,7 @@ export const App = () => (
     />
     <Resource
       name="groupitems"
-      list={GroupItem}
+      list={GroupItemList}
       options={{ label: "アイテム" }}
       icon={PlayArrowRoundedIcon}
     />

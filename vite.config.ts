@@ -8,7 +8,7 @@ export default defineConfig(({ mode }) => ({
     host: true,
         proxy: {
       "/api": {
-        target: "http://210.101.236.160:8201",
+        target: "http://210.101.236.157:9201",
         changeOrigin: true,
         secure: false,
         cookieDomainRewrite: "",

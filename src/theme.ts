@@ -148,6 +148,16 @@ const theme = createTheme({
         },
       },
     },
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          overflow: "hidden",      // ページ全体はスクロール不可
+        },
+        html: {
+          overflow: "hidden",
+        },
+      },
+    },
   },
 });
 
