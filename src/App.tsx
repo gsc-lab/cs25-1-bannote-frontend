@@ -1,4 +1,5 @@
 import { Admin, CustomRoutes, Resource } from "react-admin";
+import { i18nProvider } from "./i18n"; 
 import { AppLayout } from "./components/layout/AppLayout";
 import { dataProvider } from "./providers/dataProvider";
 import {
@@ -15,12 +16,14 @@ import { UserCreate, UserEdit, UserList } from "./pages/Users";
 import SchoolIcon from "@mui/icons-material/School";
 import ClassIcon from "@mui/icons-material/Class";
 import PersonIcon from "@mui/icons-material/Person";
+import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import { Route } from "react-router-dom";
 import { authProvider } from "./providers/authProvider";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import theme from "./theme";
 import { AllowedDomainCreate, AllowedDomainList } from "./pages/AllowedDomains";
+import { GroupItem } from "./components/schedule/GroupItem"
 
 export const App = () => (
   <Admin
@@ -28,7 +31,7 @@ export const App = () => (
     dataProvider={dataProvider}
     authProvider={authProvider}
     loginPage={LoginPage}
-    theme={theme} // ← ここでテーマを適用
+    theme={theme} 
   >
     <Resource
       name="departments"
@@ -37,6 +40,7 @@ export const App = () => (
       edit={DepartmentEdit}
       recordRepresentation="department_code"
       icon={SchoolIcon}
+      options={{ label: "학과" }}
     />
     <Resource
       name="studentclasses"
@@ -44,7 +48,8 @@ export const App = () => (
       create={StudentClassCreate}
       edit={StudentClassEdit}
       recordRepresentation="student_class_code"
-      icon={ClassIcon}
+      icon={PlayArrowRoundedIcon}
+      options={{ label: "학급" }}
     />
     <Resource
       name="users"
@@ -52,13 +57,24 @@ export const App = () => (
       create={UserCreate}
       edit={UserEdit}
       recordRepresentation="user_code"
-      icon={PersonIcon}
+      icon={PlayArrowRoundedIcon}
+      options={{ label: "유저" }}
+
     />
     <Resource
       name="alloweddomains"
       list={AllowedDomainList}
       create={AllowedDomainCreate}
+      options={{ label: "승인" }}
+      icon={PlayArrowRoundedIcon}
     />
+    <Resource
+      name="groupitems"
+      list={GroupItem}
+      options={{ label: "アイテム" }}
+      icon={PlayArrowRoundedIcon}
+    />
+
     <CustomRoutes noLayout>
       <Route path="/register" element={<RegisterPage />} />
     </CustomRoutes>

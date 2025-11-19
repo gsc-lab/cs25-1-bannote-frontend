@@ -26,6 +26,9 @@ export const LoginPage = () => {
 
       const data = await response.json();
 
+      console.log(data);
+      
+
       // 회원가입이 필요한 경우 (백엔드에서 exists: false 응답)
       if (!data.exists) {
         // credential 토큰을 URL parameter로 전달

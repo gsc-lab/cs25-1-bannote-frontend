@@ -26,15 +26,20 @@ const SettingsMenuItem = React.forwardRef<HTMLAnchorElement>((props, ref) => {
   );
 });
 
-const CustomAppBar = () => {
+const CustomAppBar = (props: any) => {
   return (
     <AppBar
+      sx={{
+        backgroundColor: "#172C66",
+        color: "white",
+      }}
       userMenu={
         <UserMenu>
           <SettingsMenuItem />
           <Logout />
         </UserMenu>
       }
+      {...props}
     />
   );
 };
