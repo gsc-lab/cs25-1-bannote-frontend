@@ -1,3 +1,5 @@
+//src/pages/AllowedDomains.tsx
+
 import {
   Create,
   DataTable,
@@ -9,9 +11,29 @@ import {
 } from "react-admin";
 import { formatFirestoreTimestamp } from "../utils/dateUtils";
 
+// フィルター定義
+const allowedDomainFilters = [
+  <TextInput
+    source="id"
+    label="도메인"
+    alwaysOn
+    key="domain-filter"
+    size="small"
+    sx={{ minWidth: 200, marginBottom: 0.5, marginTop: 0.5 }}
+  />,
+  <TextInput
+    source="created_by"
+    label="등록자"
+    alwaysOn
+    key="created-by-filter"
+    size="small"
+    sx={{ minWidth: 150, marginBottom: 0.5, marginTop: 0.5 }}
+  />,
+];
+
 export const AllowedDomainList = () => {
   return (
-    <List>
+    <List filters={allowedDomainFilters}>
       <DataTable rowClick={false}>
         <DataTable.Col source="id" label="도메인" />
         <DataTable.Col source="created_by" label="등록자" />

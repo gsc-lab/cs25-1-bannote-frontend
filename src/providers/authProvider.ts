@@ -30,9 +30,9 @@ export const authProvider: AuthProvider = {
 
   checkError: (error) => {
     const status = error.status;
-    if (status === 401 || status === 403) {
-      return Promise.reject();
-    }
+    // if (status === 401 || status === 403) {
+    //   return Promise.reject();
+    // }
     return Promise.resolve();
   },
 
