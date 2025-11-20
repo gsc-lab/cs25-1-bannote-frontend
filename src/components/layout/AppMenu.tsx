@@ -46,7 +46,8 @@ export const AppMenu = () => (
         },
       },
       "& .RaMenuItemLink-icon": {
-        minWidth: 36,
+        maxWidth: 30,
+        // fontSize: 15,   
         color: menuDefault,
         transition: "color 0.2s ease",
       },
@@ -57,6 +58,7 @@ export const AppMenu = () => (
       // メニュー閉じたときはテキストを非表示
       "&.RaMenu-closed .RaMenuItemLink-text": { display: "none" },
       "&.RaMenu-closed .menu-section-text": { display: "none" },
+      "& .RaMenuItemLink-icon svg": {fontSize: 20},
     }}
     PaperProps={{ style: { width: 180 } }}
   >

@@ -8,6 +8,9 @@ import CoPresentIcon from "@mui/icons-material/CoPresent";
 import SellIcon from '@mui/icons-material/Sell';
 import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
 import TurnedInIcon from '@mui/icons-material/TurnedIn';
+import { getIconByGroup } from "./getIconByGroup";
+
+
 
 interface Tag {
   tag_id: string;
@@ -176,7 +179,9 @@ export const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
       boxShadow: "0 4px 12px rgba(23,44,102,0.2)",
     }}
   >
-    <CoPresentIcon sx={{ fontSize: 26, color: "#fff" }} />
+    {React.cloneElement(getIconByGroup(data.tags), {
+      sx: { fontSize: 26, color: "#fff" }
+    })}
   </Box>
 
   {/* コンテンツ */}

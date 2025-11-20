@@ -56,7 +56,7 @@ export const ScheduleFilter: React.FC<ScheduleFilterProps> = ({ onChange }) => {
         borderRadius: 5,
         border: "0.5px solid #172c66",
         background: "linear-gradient(180deg, #ffffff, #f6f6f9)",
-        height: "90vh",
+        height: "92vh",
         width: "360px",
         p: 4,
         overflowY: "auto",
@@ -69,9 +69,12 @@ export const ScheduleFilter: React.FC<ScheduleFilterProps> = ({ onChange }) => {
           fontWeight: 800,
           fontSize: 18,
           color: "#172C66",
+          display:"flex",
+          justifyContent:"center",
+          alignItems:"center"
         }}
       >
-        Tag 검색
+        <SellIcon sx={{mr:1}}/> 검색
       </Typography>
 
       {tagGroups.map(group => (
