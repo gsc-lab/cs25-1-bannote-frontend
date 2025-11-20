@@ -22,7 +22,12 @@ import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import theme from "./theme";
 import { AllowedDomainCreate, AllowedDomainList } from "./pages/AllowedDomains";
-import { GroupItemList } from "./components/schedule/GroupItemList"
+import { GroupItemList } from "./components/schedule/GroupItemList";
+import SellIcon from '@mui/icons-material/Sell';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
+import RecentActorsIcon from '@mui/icons-material/RecentActors';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import Diversity1Icon from '@mui/icons-material/Diversity1';
 
 export const App = () => (
   <Admin
@@ -38,7 +43,7 @@ export const App = () => (
       create={DepartmentCreate}
       edit={DepartmentEdit}
       recordRepresentation="department_code"
-      icon={PlayArrowRoundedIcon}
+      icon={Diversity1Icon}
       options={{ label: "학과" }}
     />
     <Resource
@@ -47,7 +52,7 @@ export const App = () => (
       create={StudentClassCreate}
       edit={StudentClassEdit}
       recordRepresentation="student_class_code"
-      icon={PlayArrowRoundedIcon}
+      icon={RecentActorsIcon}
       options={{ label: "학급" }}
     />
     <Resource
@@ -56,7 +61,7 @@ export const App = () => (
       create={UserCreate}
       edit={UserEdit}
       recordRepresentation="user_code"
-      icon={PlayArrowRoundedIcon}
+      icon={AccountBoxIcon}
       options={{ label: "유저" }}
 
     />
@@ -65,13 +70,13 @@ export const App = () => (
       list={AllowedDomainList}
       create={AllowedDomainCreate}
       options={{ label: "승인" }}
-      icon={PlayArrowRoundedIcon}
+      icon={HowToRegIcon}
     />
     <Resource
       name="groupitems"
       list={GroupItemList}
-      options={{ label: "アイテム" }}
-      icon={PlayArrowRoundedIcon}
+      options={{ label: "태그" }}
+      icon={SellIcon}
     />
 
     <CustomRoutes noLayout>
