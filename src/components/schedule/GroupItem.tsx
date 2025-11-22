@@ -82,7 +82,7 @@ export const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
         cursor: "pointer",
         transition: "all 0.25s ease",
         background: `linear-gradient(145deg, #ffffff, #f4f6fc)`,
-        border: `1px solid #172c66`,
+        // border: `1px solid #172c66`,
         boxShadow: "0 6px 18px rgba(23,44,102,0.1)",
         "&:hover": {
           boxShadow: "0 12px 24px rgba(23,44,102,0.18)",

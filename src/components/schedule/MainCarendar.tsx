@@ -102,8 +102,10 @@ export const MyCalendar = () => {
       
       {/* -------- 左サイド（外部イベント） ---------- */}
       <Box
+
         ref={externalEventsRef}
         sx={{
+        //   border: "0.5px solid #172c66",
           width: 260,
           backgroundColor: '#ffffff',
           borderRadius: 4,
@@ -121,6 +123,8 @@ export const MyCalendar = () => {
 
       {/* -------- カレンダー -------- */}
       <Box sx={{
+        // border: "0.5px solid #172c66",
+
         flex: 1,
         background: '#ffffff',
         borderRadius: 4,
@@ -136,7 +140,7 @@ export const MyCalendar = () => {
           transition: '0.2s'
         },
         '& .fc-button:hover': { backgroundColor: '#394b78' },
-        '& .fc-button-active': { backgroundColor: '#001845' },
+        '& .fc-button-active': { backgroundColor: '#3e4f70ff' },
         '& .fc-toolbar-title': { fontSize: '22px', fontWeight: 600, color: '#1c2974' }
       }}>
         <FullCalendar

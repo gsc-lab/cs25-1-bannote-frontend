@@ -54,7 +54,7 @@ export const ScheduleFilter: React.FC<ScheduleFilterProps> = ({ onChange }) => {
     <Box
       sx={{
         borderRadius: 5,
-        border: "0.5px solid #172c66",
+        // border: "0.5px solid #172c66",
         background: "linear-gradient(180deg, #ffffff, #f6f6f9)",
         height: "92vh",
         width: "360px",
