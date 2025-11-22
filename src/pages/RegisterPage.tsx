@@ -19,6 +19,9 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import Slide from "@mui/material/Slide";
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { useNavigate } from "react-router-dom";
+
 
 interface UserInfo {
   email: string;
@@ -174,6 +177,12 @@ const maillErrorMsg = (
 
     fetchClasses();
   }, [department, departments]);
+
+  const navigate = useNavigate();
+  const handleGoLogin = () => {
+    navigate("/login");   // ログインページへ移動
+  };  
+
 
   const handleRegister = async () => {
     const newErrors = {
@@ -558,30 +567,59 @@ const maillErrorMsg = (
               </Select>
             </FormControl>
 
-
-            {/* 등록ボタン */}
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={handleRegister}
-              sx={{ mt: 3, height: 50, fontSize: 17, bgcolor: navy, color: "white", borderRadius: 3, boxShadow: 3, "&:hover": { bgcolor: "#0f1b45" } }}
-            >
-              등록
-            </Button>
-          </CardContent>
-          {success && (
-            <Slide in={success} direction="down" mountOnEnter unmountOnExit>
-              <Stack
+            <Box sx={{ display: "flex", gap: 0.5, mt: 1.5 }}>
+              {/* 로그인 페이지 버튼 */}
+              <Button
+                fullWidth
+                variant="outlined"
+                onClick={handleGoLogin}
                 sx={{
-                  position: "fixed",   
-                  top: 30,
-                  left: "10%",           // ← 画面中央に変更
-                  transform: "translateX(-50%)", // ← X軸中央に移動
-                  zIndex: 1300,
-                  width: "auto",
-                  maxWidth: 400,
+                  height: 50,
+                  fontSize: 16,
+                  color: navy,
+                  borderColor: navy,
+                  border: `2px solid ${navy}`,
+                  borderRadius: 3,
+                  "&:hover": { borderColor: "#0f1b45", background: "#f4f6fb" }
                 }}
               >
+                <ExitToAppIcon sx={{ mr: 1 }} /> 로그인 페이지
+              </Button>
+
+              {/* 등록 버튼 */}
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={handleRegister}
+                sx={{
+                  height: 50,
+                  fontSize: 17,
+                  bgcolor: navy,
+                  color: "white",
+                  borderRadius: 3,
+                  boxShadow: 3,
+                  fontWeight: "bold",
+                  "&:hover": { bgcolor: "#0f1b45" }
+                }}
+              >
+                등록
+              </Button>
+            </Box>
+
+            </CardContent>
+            {success && (
+              <Slide in={success} direction="down" mountOnEnter unmountOnExit>
+                <Stack
+                  sx={{
+                    position: "fixed",   
+                    top: 30,
+                    left: "10%",           // ← 画面中央に変更
+                    transform: "translateX(-50%)", // ← X軸中央に移動
+                    zIndex: 1300,
+                    width: "auto",
+                    maxWidth: 400,
+                  }}
+                >
                 <Alert
                   variant="outlined"
                   severity="success"
