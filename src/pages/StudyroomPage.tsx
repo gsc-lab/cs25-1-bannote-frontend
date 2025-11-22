@@ -3,6 +3,8 @@ import {
   Create,
   DataTable,
   DeleteButton,
+  Edit,
+  EditButton,
   List,
   NumberInput,
   ReferenceField,
@@ -30,6 +32,9 @@ export const StudyroomList = () => {
         <DataTable.Col source="name" label="스터디룸 이름" />
         <DataTable.Col source="maximum_member" label="최대 인원" />
         <DataTable.Col>
+          <EditButton />
+        </DataTable.Col>
+        <DataTable.Col>
           <DeleteButton />
         </DataTable.Col>
       </DataTable>
@@ -48,5 +53,19 @@ export const StudyroomCreate = () => {
         <NumberInput source="maximum_member" label="최대 인원" />
       </SimpleForm>
     </Create>
+  );
+};
+
+export const StudyroomEdit = () => {
+  return (
+    <Edit>
+      <SimpleForm>
+        <TextInput source="name" label="스터디룸 이름" />
+        <ReferenceInput source="department_code" reference="departments">
+          <SelectInput optionText="name" />
+        </ReferenceInput>
+        <NumberInput source="maximum_member" label="최대 인원" />
+      </SimpleForm>
+    </Edit>
   );
 };

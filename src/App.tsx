@@ -27,7 +27,11 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import Diversity1Icon from "@mui/icons-material/Diversity1";
-import { StudyroomList, StudyroomCreate } from "./pages/StudyroomPage";
+import {
+  StudyroomList,
+  StudyroomCreate,
+  StudyroomEdit,
+} from "./pages/StudyroomPage";
 import { ScheduleMain } from "./components/schedule/ScheduleMain";
 import CalendarViewWeekIcon from "@mui/icons-material/CalendarViewWeek";
 
@@ -91,6 +95,7 @@ export const App = () => (
       // @ts-ignore
       list={StudyroomList}
       create={StudyroomCreate}
+      edit={StudyroomEdit}
       options={{ label: "스터디룸 관리" }}
       icon={ClassIcon}
     />
