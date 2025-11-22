@@ -13,9 +13,6 @@ import {
   StudentClassList,
 } from "./pages/studentclass";
 import { UserCreate, UserEdit, UserList } from "./pages/Users";
-import ClassIcon from "@mui/icons-material/Class";
-import PersonIcon from "@mui/icons-material/Person";
-import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import { Route } from "react-router-dom";
 import { authProvider } from "./providers/authProvider";
 import { LoginPage } from "./pages/LoginPage";
@@ -28,6 +25,9 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 import RecentActorsIcon from '@mui/icons-material/RecentActors';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import Diversity1Icon from '@mui/icons-material/Diversity1';
+import { ScheduleMain } from './components/schedule/ScheduleMain'
+import CalendarViewWeekIcon from '@mui/icons-material/CalendarViewWeek';
+
 
 export const App = () => (
   <Admin
@@ -78,6 +78,13 @@ export const App = () => (
       options={{ label: "태그" }}
       icon={SellIcon}
     />
+    <Resource
+      name="calendar"
+      list={ScheduleMain}
+      options={{ label: "캘린더" }}
+      icon={CalendarViewWeekIcon}
+    />
+
 
     <CustomRoutes noLayout>
       <Route path="/register" element={<RegisterPage />} />
