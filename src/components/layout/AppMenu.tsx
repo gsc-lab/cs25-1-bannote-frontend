@@ -80,5 +80,7 @@ export const AppMenu = () => (
       </Typography>
     </Box>
     <Menu.ResourceItem name="groupitems" />
+    <Menu.ResourceItem name="calendar" />
+
   </Menu>
 );
