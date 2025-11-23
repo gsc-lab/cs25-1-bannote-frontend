@@ -27,6 +27,7 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import Diversity1Icon from "@mui/icons-material/Diversity1";
+import StarsIcon from '@mui/icons-material/Stars';
 import {
   StudyroomList,
   StudyroomCreate,
@@ -96,8 +97,8 @@ export const App = () => (
       list={StudyroomList}
       create={StudyroomCreate}
       edit={StudyroomEdit}
-      options={{ label: "스터디룸 관리" }}
-      icon={ClassIcon}
+      options={{ label: "예약 상황" }}
+      icon={StarsIcon}
     />
     <Resource name="room-operating" />
     <Resource name="room-exception" />
