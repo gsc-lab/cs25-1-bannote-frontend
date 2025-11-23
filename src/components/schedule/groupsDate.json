@@ -1,0 +1,538 @@
+
+
+
+{
+  "groupsData": [
+    {
+      "group_id": "1",
+      "group_name": "일본어문법",
+      "group_description": "일본어 문법 수업",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "101", "name": "일본어" },
+        { "tag_id": "201", "name": "정규" },
+        { "tag_id": "1", "name": "1학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "2",
+      "group_name": "일본어문법",
+      "group_description": "일본어 문법 수업",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "101", "name": "일본어" },
+        { "tag_id": "201", "name": "정규" },
+        { "tag_id": "2", "name": "2학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "3",
+      "group_name": "일본어문법",
+      "group_description": "일본어 문법 수업",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "101", "name": "일본어" },
+        { "tag_id": "201", "name": "정규" },
+        { "tag_id": "3", "name": "3학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "4",
+      "group_name": "일본어문법",
+      "group_description": "일본어 문법 특강",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "101", "name": "일본어" },
+        { "tag_id": "202", "name": "특강" },
+        { "tag_id": "1", "name": "1학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "5",
+      "group_name": "일본어문법",
+      "group_description": "일본어 문법 특강",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "101", "name": "일본어" },
+        { "tag_id": "202", "name": "특강" },
+        { "tag_id": "2", "name": "2학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "6",
+      "group_name": "일본어문법",
+      "group_description": "일본어 문법 특강",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "101", "name": "일본어" },
+        { "tag_id": "202", "name": "특강" },
+        { "tag_id": "3", "name": "3학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "7",
+      "group_name": "일본어회화",
+      "group_description": "일본어 회화 수업",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "101", "name": "일본어" },
+        { "tag_id": "201", "name": "정규" },
+        { "tag_id": "1", "name": "1학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "8",
+      "group_name": "일본어회화",
+      "group_description": "일본어 회화 수업",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "101", "name": "일본어" },
+        { "tag_id": "201", "name": "정규" },
+        { "tag_id": "2", "name": "2학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "9",
+      "group_name": "일본어회화",
+      "group_description": "일본어 회화 수업",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "101", "name": "일본어" },
+        { "tag_id": "201", "name": "정규" },
+        { "tag_id": "3", "name": "3학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "10",
+      "group_name": "일본어회화",
+      "group_description": "일본어 회화 특강",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "101", "name": "일본어" },
+        { "tag_id": "202", "name": "특강" },
+        { "tag_id": "1", "name": "1학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "11",
+      "group_name": "일본어회화",
+      "group_description": "일본어 회화 특강",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "101", "name": "일본어" },
+        { "tag_id": "202", "name": "특강" },
+        { "tag_id": "2", "name": "2학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "12",
+      "group_name": "일본어회화",
+      "group_description": "일본어 회화 특강",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "101", "name": "일본어" },
+        { "tag_id": "202", "name": "특강" },
+        { "tag_id": "3", "name": "3학년" }
+      ],
+      "bookmark" : false
+    },
+
+    {
+      "group_id": "13",
+      "group_name": "한국어문법",
+      "group_description": "한국어 문법 수업",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "102", "name": "한국어" },
+        { "tag_id": "201", "name": "정규" },
+        { "tag_id": "1", "name": "1학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "13",
+      "group_name": "한국어문법",
+      "group_description": "한국어 문법 수업",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "102", "name": "한국어" },
+        { "tag_id": "201", "name": "정규" },
+        { "tag_id": "1", "name": "1학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "14",
+      "group_name": "한국어문법",
+      "group_description": "한국어 문법 수업",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "102", "name": "한국어" },
+        { "tag_id": "201", "name": "정규" },
+        { "tag_id": "2", "name": "2학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "15",
+      "group_name": "한국어문법",
+      "group_description": "한국어 문법 수업",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "102", "name": "한국어" },
+        { "tag_id": "201", "name": "정규" },
+        { "tag_id": "3", "name": "3학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "16",
+      "group_name": "한국어문법",
+      "group_description": "한국어 문법 특강",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "102", "name": "한국어" },
+        { "tag_id": "202", "name": "특강" },
+        { "tag_id": "1", "name": "1학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "17",
+      "group_name": "한국어문법",
+      "group_description": "한국어 문법 특강",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "102", "name": "한국어" },
+        { "tag_id": "202", "name": "특강" },
+        { "tag_id": "2", "name": "2학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "18",
+      "group_name": "한국어문법",
+      "group_description": "한국어 문법 특강",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "102", "name": "한국어" },
+        { "tag_id": "202", "name": "특강" },
+        { "tag_id": "3", "name": "3학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "19",
+      "group_name": "한국어회화",
+      "group_description": "한국어 회화 수업",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "102", "name": "한국어" },
+        { "tag_id": "201", "name": "정규" },
+        { "tag_id": "1", "name": "1학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "20",
+      "group_name": "한국어회화",
+      "group_description": "한국어 회화 수업",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "102", "name": "한국어" },
+        { "tag_id": "201", "name": "정규" },
+        { "tag_id": "2", "name": "2학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "21",
+      "group_name": "한국어회화",
+      "group_description": "한국어 회화 수업",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "102", "name": "한국어" },
+        { "tag_id": "201", "name": "정규" },
+        { "tag_id": "3", "name": "3학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "22",
+      "group_name": "한국어회화",
+      "group_description": "한국어 회화 특강",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "102", "name": "한국어" },
+        { "tag_id": "202", "name": "특강" },
+        { "tag_id": "1", "name": "1학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "23",
+      "group_name": "한국어회화",
+      "group_description": "한국어 회化 특강",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "102", "name": "한국어" },
+        { "tag_id": "202", "name": "특강" },
+        { "tag_id": "2", "name": "2학년" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "24",
+      "group_name": "한국어회화",
+      "group_description": "한국어 회화 특강",
+      "color_default": "#172C66",
+      "color_highlight": "#A10000",
+      "tags": [
+        { "tag_id": "102", "name": "한국어" },
+        { "tag_id": "202", "name": "특강" },
+        { "tag_id": "3", "name": "3학년" }
+      ],
+      "bookmark" : false
+    },
+
+    {
+      "group_id": "25",
+      "group_name": "JLPT",
+      "group_description": "JLPT N3 수업",
+      "color_default": "#F297BD",
+      "color_highlight": "#FF6B6B",
+      "tags": [
+        { "tag_id": "301", "name": "JLPT" },
+        { "tag_id": "201", "name": "정규" },
+        { "tag_id": "N3", "name": "N3" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "26",
+      "group_name": "JLPT",
+      "group_description": "JLPT N2 수업",
+      "color_default": "#F297BD",
+      "color_highlight": "#FF6B6B",
+      "tags": [
+        { "tag_id": "301", "name": "JLPT" },
+        { "tag_id": "201", "name": "정규" },
+        { "tag_id": "N2", "name": "N2" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "27",
+      "group_name": "JLPT",
+      "group_description": "JLPT N1 수업",
+      "color_default": "#F297BD",
+      "color_highlight": "#FF6B6B",
+      "tags": [
+        { "tag_id": "301", "name": "JLPT" },
+        { "tag_id": "201", "name": "정규" },
+        { "tag_id": "N1", "name": "N1" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "28",
+      "group_name": "JLPT",
+      "group_description": "JLPT N3 특강",
+      "color_default": "#F297BD",
+      "color_highlight": "#FF6B6B",
+      "tags": [
+        { "tag_id": "301", "name": "JLPT" },
+        { "tag_id": "202", "name": "특강" },
+        { "tag_id": "N3", "name": "N3" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "29",
+      "group_name": "JLPT",
+      "group_description": "JLPT N2 특강",
+      "color_default": "#F297BD",
+      "color_highlight": "#FF6B6B",
+      "tags": [
+        { "tag_id": "301", "name": "JLPT" },
+        { "tag_id": "202", "name": "특강" },
+        { "tag_id": "N2", "name": "N2" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "30",
+      "group_name": "JLPT",
+      "group_description": "JLPT N1 특강",
+      "color_default": "#F297BD",
+      "color_highlight": "#FF6B6B",
+      "tags": [
+        { "tag_id": "301", "name": "JLPT" },
+        { "tag_id": "202", "name": "특강" },
+        { "tag_id": "N1", "name": "N1" }
+      ],
+      "bookmark" : false
+    },
+
+    {
+      "group_id": "31",
+      "group_name": "TOPIK",
+      "group_description": "TOPIK Ⅰ 수업",
+      "color_default": "#F4E58F",
+      "color_highlight": "#FF9EAA",
+      "tags": [
+        { "tag_id": "302", "name": "TOPIK" },
+        { "tag_id": "201", "name": "정규" },
+        { "tag_id": "1", "name": "Ⅰ" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "32",
+      "group_name": "TOPIK",
+      "group_description": "TOPIK Ⅱ 수업",
+      "color_default": "#F4E58F",
+      "color_highlight": "#FF9EAA",
+      "tags": [
+        { "tag_id": "302", "name": "TOPIK" },
+        { "tag_id": "201", "name": "정규" },
+        { "tag_id": "2", "name": "Ⅱ" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "33",
+      "group_name": "TOPIK",
+      "group_description": "TOPIK Ⅰ 특강",
+      "color_default": "#F4E58F",
+      "color_highlight": "#FF9EAA",
+      "tags": [
+        { "tag_id": "302", "name": "TOPIK" },
+        { "tag_id": "202", "name": "특강" },
+        { "tag_id": "1", "name": "Ⅰ" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "34",
+      "group_name": "TOPIK",
+      "group_description": "TOPIK Ⅱ 특강",
+      "color_default": "#F4E58F",
+      "color_highlight": "#FF9EAA",
+      "tags": [
+        { "tag_id": "302", "name": "TOPIK" },
+        { "tag_id": "202", "name": "특강" },
+        { "tag_id": "2", "name": "Ⅱ" }
+      ],
+      "bookmark" : false
+    },
+
+    {
+      "group_id": "35",
+      "group_name": "회화스터디",
+      "group_description": "회화연습 모임",
+      "color_default": "#86D1DA",
+      "color_highlight": "#FFC94A",
+      "tags": [
+        { "tag_id": "401", "name": "스터디" },
+        { "tag_id": "2", "name": "오프라인" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "36",
+      "group_name": "회화스터디",
+      "group_description": "회화연습 온라인",
+      "color_default": "#86D1DA",
+      "color_highlight": "#FFC94A",
+      "tags": [
+        { "tag_id": "401", "name": "스터디" },
+        { "tag_id": "3", "name": "온라인" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "37",
+      "group_name": "자유회화",
+      "group_description": "자유 회화 커뮤니티",
+      "color_default": "#86D1DA",
+      "color_highlight": "#F06C9B",
+      "tags": [
+        { "tag_id": "402", "name": "커뮤니티" },
+        { "tag_id": "3", "name": "온라인" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "38",
+      "group_name": "발음 워크숍",
+      "group_description": "발음 집중 훈련",
+      "color_default": "#86D1DA",
+      "color_highlight": "#FED9ED",
+      "tags": [
+        { "tag_id": "403", "name": "발음" },
+        { "tag_id": "202", "name": "특강" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "39",
+      "group_name": "문법 워크숍",
+      "group_description": "문법 문제풀이 집중 과정",
+      "color_default": "#86D1DA",
+      "color_highlight": "#FED9ED",
+      "tags": [
+        { "tag_id": "404", "name": "워크숍" },
+        { "tag_id": "202", "name": "특강" }
+      ],
+      "bookmark" : false
+    },
+    {
+      "group_id": "40",
+      "group_name": "시험대비 모의고사",
+      "group_description": "실전 모의 시험",
+      "color_default": "#86D1DA",
+      "color_highlight": "#FFB22C",
+      "tags": [
+        { "tag_id": "405", "name": "모의고사" },
+        { "tag_id": "202", "name": "특강" }
+      ],
+      "bookmark" : false
+    }
+  ]
+}

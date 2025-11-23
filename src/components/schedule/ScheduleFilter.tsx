@@ -8,37 +8,46 @@ import SellIcon from '@mui/icons-material/Sell';
 import SchoolIcon from '@mui/icons-material/School';
 import CoPresentIcon from '@mui/icons-material/CoPresent';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
+import tagListJson from "./tagList.json";
 
 interface ScheduleFilterProps {
   onChange: (selectedTags: string[]) => void;
 }
 
 export const ScheduleFilter: React.FC<ScheduleFilterProps> = ({ onChange }) => {
-  const tagGroups = [
-    { title: "학년", icon: <Filter3Icon sx={{ color: "#172C66" }} />, tags: [
-        { tag_id: "1", name: "1학년", icon: <SellIcon /> },
-        { tag_id: "2", name: "2학년", icon: <SellIcon /> },
-        { tag_id: "3", name: "3학년", icon: <SellIcon /> },
-      ]},
-    { title: "학과", icon: <SchoolIcon sx={{ color: "#172C66" }} />, tags: [
-        { tag_id: "4", name: "글로벌시스템융합과", icon: <SellIcon /> },
-        { tag_id: "5", name: "오늘은뭐할과", icon: <SellIcon /> },
-      ]},
-    { title: "수업", icon: <CoPresentIcon sx={{ color: "#172C66" }} />, tags: [
-        { tag_id: "6", name: "특강", icon: <SellIcon /> },
-        { tag_id: "7", name: "정규", icon: <SellIcon /> },
-        { tag_id: "8", name: "이벤트", icon: <SellIcon /> },
-        { tag_id: "9", name: "한국어", icon: <SellIcon /> },
-        { tag_id: "10", name: "일본어", icon: <SellIcon /> },
-        { tag_id: "11", name: "전공", icon: <SellIcon /> },
-      ]},
-    { title: "서비스", icon: <CleaningServicesIcon sx={{ color: "#172C66" }} />, tags: [
-        { tag_id: "12", name: "청소", icon: <SellIcon /> },
-        { tag_id: "13", name: "스터디룸", icon: <SellIcon /> },
-      ]},
-  ];
-
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  // 🔹 JSONからタグ情報をカテゴリ別に整理
+  const tagGroups = [
+    {
+      title: "학년",
+      icon: <Filter3Icon sx={{ color: "#172C66" }} />,
+      tags: tagListJson.tag_list_response.tags
+        .filter(t => ["1", "2", "3"].includes(t.tag_id))
+        .map(t => ({ ...t, icon: <SellIcon /> }))
+    },
+    {
+      title: "학과",
+      icon: <SchoolIcon sx={{ color: "#172C66" }} />,
+      tags: tagListJson.tag_list_response.tags
+        .filter(t => ["4", "5"].includes(t.tag_id))
+        .map(t => ({ ...t, icon: <SellIcon /> }))
+    },
+    {
+      title: "수업",
+      icon: <CoPresentIcon sx={{ color: "#172C66" }} />,
+      tags: tagListJson.tag_list_response.tags
+        .filter(t => ["6", "7", "8", "9", "10", "11"].includes(t.tag_id))
+        .map(t => ({ ...t, icon: <SellIcon /> }))
+    },
+    {
+      title: "서비스",
+      icon: <CleaningServicesIcon sx={{ color: "#172C66" }} />,
+      tags: tagListJson.tag_list_response.tags
+        .filter(t => ["12", "13"].includes(t.tag_id))
+        .map(t => ({ ...t, icon: <SellIcon /> }))
+    },
+  ];
 
   const toggleTag = (tagId: string) => {
     setSelectedTags(prev => {
@@ -54,7 +63,7 @@ export const ScheduleFilter: React.FC<ScheduleFilterProps> = ({ onChange }) => {
     <Box
       sx={{
         borderRadius: 5,
-        border: "0.5px solid #172c66",
+        border: "0.5px solid #c8d2f3ff",
         background: "linear-gradient(180deg, #ffffff, #f6f6f9)",
         height: "92vh",
         width: "360px",
@@ -65,17 +74,19 @@ export const ScheduleFilter: React.FC<ScheduleFilterProps> = ({ onChange }) => {
     >
       <Typography
         sx={{
-          mb: 3,
-          fontWeight: 800,
+          fontWeight: 700,
           fontSize: 18,
-          color: "#172C66",
-          display:"flex",
-          justifyContent:"center",
-          alignItems:"center"
+          color: '#172c66',
+          mb: 1,
+          display: "flex",
+          alignItems: "center",
+          gap: 1
         }}
       >
-        <SellIcon sx={{mr:1}}/> 검색
+        <SellIcon sx={{ fontSize: 22 }} />
+        즐겨찾기
       </Typography>
+      <Box sx={{ width: '100%', height: 2, backgroundColor: '#dee3f5', mb: 5 }} />
 
       {tagGroups.map(group => (
         <Box key={group.title} sx={{ mb: 5 }}>
@@ -117,8 +128,8 @@ export const ScheduleFilter: React.FC<ScheduleFilterProps> = ({ onChange }) => {
                     transition: "all 0.2s ease",
                     "&:hover": {
                       backgroundColor: "#172C66",
-                      color: "#fff",
-                      "& .MuiChip-icon": { color: "#fff" },
+                      color: "#172C66",
+                      "& .MuiChip-icon": { color: "#172C66" },
                       transform: "scale(1.05)",
                     },
                     "& .MuiChip-icon": {
