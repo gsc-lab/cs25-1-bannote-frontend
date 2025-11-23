@@ -21,18 +21,25 @@ export const GroupItemList: React.FC = () => {
     setGroups(initialGroups);
   }, []);
 
-  const handleBookmarkToggle = (group_id: string) => {
-    setGroups((prev) =>
-      prev.map((g) => (g.group_id === group_id ? { ...g, bookmark: !g.bookmark } : g))
-    );
-
-    const savedBookmarks = JSON.parse(localStorage.getItem(LOCAL_KEY) || "[]") as string[];
-    const updated = savedBookmarks.includes(group_id)
-      ? savedBookmarks.filter((id) => id !== group_id)
-      : [...savedBookmarks, group_id];
-
-    localStorage.setItem(LOCAL_KEY, JSON.stringify(updated));
+  const handleBookmarkToggle = async (group_id: string) => {
+    console.log("clicked", group_id);
+    try {
+      const res = await fetch("http://localhost:4000/bookmark", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ group_id }),
+      });
+      const result = await res.json();
+      if (result.success) {
+        setGroups((prev) =>
+          prev.map((g) => (g.group_id === group_id ? { ...g, bookmark: result.group.bookmark } : g))
+        );
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
+
 
   const filteredGroups =
     selectedTags.length === 0
