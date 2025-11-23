@@ -1,13 +1,14 @@
 // src/components/schedule/GroupItem.tsx
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
-import SellIcon from '@mui/icons-material/Sell';
-import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
-import TurnedInIcon from '@mui/icons-material/TurnedIn';
+import SellIcon from "@mui/icons-material/Sell";
+import TurnedInNotIcon from "@mui/icons-material/TurnedInNot";
+import TurnedInIcon from "@mui/icons-material/TurnedIn";
 import { getIconByGroup } from "./getIconByGroup";
+import { ItemModal } from "./ItemModal";  
 
 export interface Tag {
   tag_id: string;
@@ -30,27 +31,31 @@ interface GroupItemProps {
 }
 
 export const GroupItem: React.FC<GroupItemProps> = ({ data, onBookmarkToggle }) => {
+  const [open, setOpen] = useState(false); // ← モーダル用State
+
   return (
-    <Card
-      sx={{
-        width: 300,
-        height: 110,
-        borderRadius: 4,
-        p: 2,
-        display: "flex",
-        gap: 2,
-        alignItems: "center",
-        cursor: "pointer",
-        transition: "all 0.25s ease",
-        background: `linear-gradient(145deg, #ffffff, #f4f6fc)`,
-        border: `0.1px solid #aebeecff`,
-        boxShadow: "0 6px 18px rgba(23,44,102,0.1)",
-        "&:hover": {
-          boxShadow: "0 12px 24px rgba(23,44,102,0.18)",
-          transform: "translateY(-3px)",
-        },
-      }}
-    >
+    <>
+      <Card
+        onClick={() => setOpen(true)} 
+        sx={{
+          width: 300,
+          height: 110,
+          borderRadius: 4,
+          p: 2,
+          display: "flex",
+          gap: 2,
+          alignItems: "center",
+          cursor: "pointer",
+          transition: "all 0.25s ease",
+          background: `linear-gradient(145deg, #ffffff, #f4f6fc)`,
+          border: `0.1px solid #aebeecff`,
+          boxShadow: "0 6px 18px rgba(23,44,102,0.1)",
+          "&:hover": {
+            boxShadow: "0 12px 24px rgba(23,44,102,0.18)",
+            transform: "translateY(-3px)",
+          },
+        }}
+      >
       {/* 左アイコン */}
       <Box
         sx={{
@@ -122,7 +127,9 @@ export const GroupItem: React.FC<GroupItemProps> = ({ data, onBookmarkToggle }) 
             whiteSpace: "nowrap",
           }}
         >
-          {data.group_description}
+          {data.group_description.length > 15
+            ? `${data.group_description.slice(0, 15)}...`
+            : data.group_description}
         </Typography>
 
         <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap", mt: 0.5 }}>
@@ -154,5 +161,8 @@ export const GroupItem: React.FC<GroupItemProps> = ({ data, onBookmarkToggle }) 
         </Box>
       </Box>
     </Card>
+      <ItemModal open={open} onClose={() => setOpen(false)} data={data} />
+
+    </>
   );
 };
