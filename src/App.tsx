@@ -93,12 +93,12 @@ export const App = () => (
       options={{ label: "캘린더" }}
       icon={CalendarViewWeekIcon}
     />
-    <Resource
+    {/* <Resource
       name="item_modal"
       list={ItemModal}
       options={{ label: "아이템 모달" }}
       icon={AddBoxIcon}
-    />
+    /> */}
 
 
     <Resource
@@ -115,6 +115,7 @@ export const App = () => (
   {/* ヘッダーやメニュー付きで表示したいページ */}
   <CustomRoutes>
     <Route path="/settings" element={<Settings />} />
+    {/* <Route path="/item-modal" element={<ItemModalPage />} /> */}
   </CustomRoutes>
 
   {/* ログイン・登録などのヘッダー不要ページ */}
