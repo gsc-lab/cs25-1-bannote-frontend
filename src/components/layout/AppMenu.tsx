@@ -3,13 +3,11 @@ import { Typography } from "@mui/material";
 import { Menu } from "react-admin";
 import Box from "@mui/material/Box";
 import SchoolIcon from "@mui/icons-material/School";
-import EventNoteIcon from '@mui/icons-material/EventNote';
-
-
+import EventNoteIcon from "@mui/icons-material/EventNote";
 
 const menuDefault = "#cfd7e9ff";
 const menuHover = "#a4b1d3ff";
-const menuActive = "#fef6e4";   // アクティブはアクセントカラー
+const menuActive = "#fef6e4"; // アクティブはアクセントカラー
 const menuDisabled = "#95A1BB";
 
 export const AppMenu = () => (
@@ -47,24 +45,31 @@ export const AppMenu = () => (
       },
       "& .RaMenuItemLink-icon": {
         maxWidth: 30,
-        // fontSize: 15,   
+        // fontSize: 15,
         color: menuDefault,
         transition: "color 0.2s ease",
       },
       "& .RaMenuItemLink-root:hover .RaMenuItemLink-icon": { color: menuHover },
-      "& .RaMenuItemLink-root.RaMenuItemLink-active .RaMenuItemLink-icon": { color: menuActive },
-      "& .RaMenuItemLink-root.RaMenuItemLink-disabled .RaMenuItemLink-icon": { color: menuDisabled },
+      "& .RaMenuItemLink-root.RaMenuItemLink-active .RaMenuItemLink-icon": {
+        color: menuActive,
+      },
+      "& .RaMenuItemLink-root.RaMenuItemLink-disabled .RaMenuItemLink-icon": {
+        color: menuDisabled,
+      },
 
       // メニュー閉じたときはテキストを非表示
       "&.RaMenu-closed .RaMenuItemLink-text": { display: "none" },
       "&.RaMenu-closed .menu-section-text": { display: "none" },
-      "& .RaMenuItemLink-icon svg": {fontSize: 20},
+      "& .RaMenuItemLink-icon svg": { fontSize: 20 },
     }}
     PaperProps={{ style: { width: 180 } }}
   >
     <Box sx={{ display: "flex", alignItems: "center", gap: 1, p: 1 }}>
       <SchoolIcon sx={{ color: "white" }} />
-      <Typography className="menu-section-text" sx={{ color: "white", fontWeight: "bold" }}>
+      <Typography
+        className="menu-section-text"
+        sx={{ color: "white", fontWeight: "bold" }}
+      >
         학생 정보
       </Typography>
     </Box>
@@ -75,12 +80,16 @@ export const AppMenu = () => (
 
     <Box sx={{ display: "flex", alignItems: "center", gap: 1, p: 1, mt: 3 }}>
       <EventNoteIcon sx={{ color: "white" }} />
-      <Typography className="menu-section-text" sx={{ color: "white", fontWeight: "bold" }}>
+      <Typography
+        className="menu-section-text"
+        sx={{ color: "white", fontWeight: "bold" }}
+      >
         일정 관리
       </Typography>
     </Box>
     <Menu.ResourceItem name="groupitems" />
     <Menu.ResourceItem name="calendar" />
 
+    <Menu.ResourceItem name="studyrooms" />
   </Menu>
 );
