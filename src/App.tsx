@@ -1,5 +1,4 @@
 import { Admin, CustomRoutes, Resource } from "react-admin";
-import { i18nProvider } from "./i18n"; 
 import { AppLayout } from "./components/layout/AppLayout";
 import { dataProvider } from "./providers/dataProvider";
 import {
@@ -13,6 +12,9 @@ import {
   StudentClassList,
 } from "./pages/studentclass";
 import { UserCreate, UserEdit, UserList } from "./pages/Users";
+import ClassIcon from "@mui/icons-material/Class";
+import PersonIcon from "@mui/icons-material/Person";
+import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import { Route } from "react-router-dom";
 import { authProvider } from "./providers/authProvider";
 import { LoginPage } from "./pages/LoginPage";
@@ -20,14 +22,14 @@ import { RegisterPage } from "./pages/RegisterPage";
 import theme from "./theme";
 import { AllowedDomainCreate, AllowedDomainList } from "./pages/AllowedDomains";
 import { GroupItemList } from "./components/schedule/GroupItemList";
-import SellIcon from '@mui/icons-material/Sell';
-import HowToRegIcon from '@mui/icons-material/HowToReg';
-import RecentActorsIcon from '@mui/icons-material/RecentActors';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import Diversity1Icon from '@mui/icons-material/Diversity1';
-import { ScheduleMain } from './components/schedule/ScheduleMain'
-import CalendarViewWeekIcon from '@mui/icons-material/CalendarViewWeek';
-
+import SellIcon from "@mui/icons-material/Sell";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
+import RecentActorsIcon from "@mui/icons-material/RecentActors";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import Diversity1Icon from "@mui/icons-material/Diversity1";
+import { StudyroomList, StudyroomCreate } from "./pages/StudyroomPage";
+import { ScheduleMain } from "./components/schedule/ScheduleMain";
+import CalendarViewWeekIcon from "@mui/icons-material/CalendarViewWeek";
 
 export const App = () => (
   <Admin
@@ -35,7 +37,7 @@ export const App = () => (
     dataProvider={dataProvider}
     authProvider={authProvider}
     loginPage={LoginPage}
-    theme={theme} 
+    theme={theme}
   >
     <Resource
       name="departments"
@@ -63,7 +65,6 @@ export const App = () => (
       recordRepresentation="user_code"
       icon={AccountBoxIcon}
       options={{ label: "유저" }}
-
     />
     <Resource
       name="alloweddomains"
@@ -85,6 +86,14 @@ export const App = () => (
       icon={CalendarViewWeekIcon}
     />
 
+    <Resource
+      name="studyrooms"
+      // @ts-ignore
+      list={StudyroomList}
+      create={StudyroomCreate}
+      options={{ label: "스터디룸 관리" }}
+      icon={ClassIcon}
+    />
 
     <CustomRoutes noLayout>
       <Route path="/register" element={<RegisterPage />} />
