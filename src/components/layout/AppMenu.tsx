@@ -90,6 +90,7 @@ export const AppMenu = () => (
     </Box>
     <Menu.ResourceItem name="groupitems" />
     <Menu.ResourceItem name="calendar" />
+    <Menu.ResourceItem name="item_modal" />
     <Box sx={{ display: "flex", alignItems: "center", gap: 1, p: 1, mt: 3 }}>
       <LocalLibraryIcon sx={{ color: "white" }} />
       <Typography

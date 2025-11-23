@@ -19,6 +19,7 @@ import { Route } from "react-router-dom";
 import { authProvider } from "./providers/authProvider";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
+import { ItemModal } from "./components/schedule/ItemModal"; 
 import theme from "./theme";
 import { AllowedDomainCreate, AllowedDomainList } from "./pages/AllowedDomains";
 import { GroupItemList } from "./components/schedule/GroupItemList";
@@ -28,6 +29,7 @@ import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import Diversity1Icon from "@mui/icons-material/Diversity1";
 import StarsIcon from '@mui/icons-material/Stars';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import {
   StudyroomList,
   StudyroomCreate,
@@ -35,6 +37,7 @@ import {
 } from "./pages/StudyroomPage";
 import { ScheduleMain } from "./components/schedule/ScheduleMain";
 import CalendarViewWeekIcon from "@mui/icons-material/CalendarViewWeek";
+import Settings from "./pages/Settings";
 
 export const App = () => (
   <Admin
@@ -90,6 +93,13 @@ export const App = () => (
       options={{ label: "캘린더" }}
       icon={CalendarViewWeekIcon}
     />
+    <Resource
+      name="item_modal"
+      list={ItemModal}
+      options={{ label: "아이템 모달" }}
+      icon={AddBoxIcon}
+    />
+
 
     <Resource
       name="studyrooms"
@@ -102,9 +112,14 @@ export const App = () => (
     />
     <Resource name="room-operating" />
     <Resource name="room-exception" />
+  {/* ヘッダーやメニュー付きで表示したいページ */}
+  <CustomRoutes>
+    <Route path="/settings" element={<Settings />} />
+  </CustomRoutes>
 
-    <CustomRoutes noLayout>
-      <Route path="/register" element={<RegisterPage />} />
-    </CustomRoutes>
+  {/* ログイン・登録などのヘッダー不要ページ */}
+  <CustomRoutes noLayout>
+    <Route path="/register" element={<RegisterPage />} />
+  </CustomRoutes>
   </Admin>
 );
