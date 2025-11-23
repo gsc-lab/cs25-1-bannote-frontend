@@ -99,6 +99,8 @@ export const App = () => (
       options={{ label: "스터디룸 관리" }}
       icon={ClassIcon}
     />
+    <Resource name="room-operating" />
+    <Resource name="room-exception" />
 
     <CustomRoutes noLayout>
       <Route path="/register" element={<RegisterPage />} />
