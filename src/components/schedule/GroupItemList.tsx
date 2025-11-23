@@ -1,37 +1,52 @@
 // src/components/schedule/GroupItemList.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import { GroupItem } from "./GroupItem";
+import { GroupItem, GroupData } from "./GroupItem";
 import { ScheduleFilter } from "./ScheduleFilter";
-import { groupsData } from "./groupsData";
+import groupsJson from "./groupsDate.json";
 
+const LOCAL_KEY = "bookmarked_groups";
 
-export const GroupItemList = () => {
+export const GroupItemList: React.FC = () => {
+  const [groups, setGroups] = useState<GroupData[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  const filteredGroups = selectedTags.length === 0
-    ? groupsData
-    : groupsData.filter(group =>
-        group.tags.some(tag => selectedTags.includes(tag.tag_id))
-      );
+  // 初期ロード：localStorage から bookmark 状態を反映
+  useEffect(() => {
+    const savedBookmarks = JSON.parse(localStorage.getItem(LOCAL_KEY) || "[]") as string[];
+    const initialGroups = groupsJson.groupsData.map((g: GroupData) => ({
+      ...g,
+      bookmark: savedBookmarks.includes(g.group_id),
+    }));
+    setGroups(initialGroups);
+  }, []);
+
+  const handleBookmarkToggle = (group_id: string) => {
+    setGroups((prev) =>
+      prev.map((g) => (g.group_id === group_id ? { ...g, bookmark: !g.bookmark } : g))
+    );
+
+    const savedBookmarks = JSON.parse(localStorage.getItem(LOCAL_KEY) || "[]") as string[];
+    const updated = savedBookmarks.includes(group_id)
+      ? savedBookmarks.filter((id) => id !== group_id)
+      : [...savedBookmarks, group_id];
+
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(updated));
+  };
+
+  const filteredGroups =
+    selectedTags.length === 0
+      ? groups
+      : groups.filter((group) => group.tags.some((tag) => selectedTags.includes(tag.tag_id)));
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        backgroundColor: "#fef6e4",
-        height: "100vh", // ページ全体高さ固定
-        p: 2,
-        gap: 2,
-        overflow: "hidden", // ページ全体はスクロールしない
-      }}
-    >
+    <Box sx={{ display: "flex", backgroundColor: "#fef6e4", height: "100vh", p: 2, gap: 2, overflow: "hidden" }}>
       {/* 左側フィルター */}
       <Box sx={{ flex: 1 }}>
         <ScheduleFilter onChange={setSelectedTags} />
       </Box>
 
-      {/* 右側カードの集合 */}
+      {/* 右側カード集合 */}
       <Box
         sx={{
           flex: 4.5,
@@ -39,13 +54,13 @@ export const GroupItemList = () => {
           flexWrap: "wrap",
           gap: 1.5,
           alignContent: "flex-start",
-          height: "100%",       // 親 Box 高さに合わせる
-          overflowY: "auto",    // Y軸スクロール
-          pr: 1,                // スクロールバー対策の右padding
+          height: "100%",
+          overflowY: "auto",
+          pr: 1,
         }}
       >
-        {filteredGroups.map(group => (
-          <GroupItem key={group.id} data={group} />
+        {filteredGroups.map((group) => (
+          <GroupItem key={group.group_id} data={group} onBookmarkToggle={handleBookmarkToggle} />
         ))}
       </Box>
     </Box>

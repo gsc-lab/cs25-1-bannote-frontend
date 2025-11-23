@@ -216,7 +216,7 @@ const maillErrorMsg = (
       family_name: userFamilyname,
       given_name: userGivenname,
       user_type: value === 0 ? "student" : "employee",
-      profile: profileImage,
+      profile_image_url: profileImage,
       student_class_code: value === 0 ? (cls?.id || null) : null,
       department_code: dep?.id || null,
     };

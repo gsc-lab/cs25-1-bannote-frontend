@@ -1,5 +1,5 @@
 // src/components/schedule/GroupItem.tsx
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
@@ -9,71 +9,32 @@ import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
 import TurnedInIcon from '@mui/icons-material/TurnedIn';
 import { getIconByGroup } from "./getIconByGroup";
 
-interface Tag {
+export interface Tag {
   tag_id: string;
   name: string;
 }
 
-interface GroupData {
-  id: number;
+export interface GroupData {
+  group_id: string;
   group_name: string;
   group_description: string;
   color_default: string;
   color_highlight: string;
   tags: Tag[];
+  bookmark: boolean;
 }
 
 interface GroupItemProps {
   data: GroupData;
+  onBookmarkToggle: (group_id: string) => void;
 }
 
-export const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
-  const LOCAL_KEY = "bookmarked_groups";
-
-  // 🔹 localStorage からブックマーク一覧を取得
-  const getSavedBookmarks = () => {
-    const saved = localStorage.getItem(LOCAL_KEY);
-    return saved ? JSON.parse(saved) : [];
-  };
-
-  // 🔹 ブックマーク状態
-  const [bookmarked, setBookmarked] = useState(false);
-
-  // 🔹 初期読み込みで localStorage の状態を反映
-  useEffect(() => {
-    const bookmarks = getSavedBookmarks();
-    setBookmarked(bookmarks.includes(data.id));
-  }, [data.id]);
-
-  // 🔹 ブックマーク切り替え
-  const toggleBookmark = (e: any) => {
-    e.stopPropagation();
-
-    const bookmarks = getSavedBookmarks();
-    let updated;
-
-    if (bookmarks.includes(data.id)) {
-      updated = bookmarks.filter((id: number) => id !== data.id);
-      setBookmarked(false);
-    } else {
-      updated = [...bookmarks, data.id];
-      setBookmarked(true);
-    }
-
-    // 保存
-    localStorage.setItem(LOCAL_KEY, JSON.stringify(updated));
-
-    // ⭐ 同じタブ内のコンポーネントにも通知
-    window.dispatchEvent(new Event("bookmarkUpdate"));
-  };
-
-
-
+export const GroupItem: React.FC<GroupItemProps> = ({ data, onBookmarkToggle }) => {
   return (
     <Card
       sx={{
         width: 300,
-        Height: 110,
+        height: 110,
         borderRadius: 4,
         p: 2,
         display: "flex",
@@ -82,7 +43,7 @@ export const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
         cursor: "pointer",
         transition: "all 0.25s ease",
         background: `linear-gradient(145deg, #ffffff, #f4f6fc)`,
-        border: `1px solid #172c66`,
+        border: `0.1px solid #aebeecff`,
         boxShadow: "0 6px 18px rgba(23,44,102,0.1)",
         "&:hover": {
           boxShadow: "0 12px 24px rgba(23,44,102,0.18)",
@@ -96,9 +57,7 @@ export const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
           width: 55,
           height: 55,
           borderRadius: "50%",
-          // background: `linear-gradient(145deg, ${data.color_default}, #b6c4e9ff)`,
           background: `${data.color_default}`,
-          // border: `0.5px solid ${data.color_default}`, 
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -107,10 +66,10 @@ export const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
         }}
       >
         {React.cloneElement(getIconByGroup(data.tags), {
-          sx: { 
-            fontSize: 26, 
-            color: data.color_default.toLowerCase() === "#172c66" ? "#b6c4e9ff" : "#2e4480ff" 
-          }
+          sx: {
+            fontSize: 26,
+            color: data.color_default.toLowerCase() === "#172c66" ? "#b6c4e9" : "#2e4480",
+          },
         })}
       </Box>
 
@@ -137,12 +96,15 @@ export const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
             </Box>
           </Box>
 
-          {/* 🔹 ブックマークアイコン */}
+          {/* ブックマーク */}
           <Box
-            onClick={toggleBookmark}
+            onClick={(e) => {
+              e.stopPropagation();
+              onBookmarkToggle(data.group_id);
+            }}
             sx={{ cursor: "pointer", transition: "transform 0.2s", "&:hover": { transform: "scale(1.2)" } }}
           >
-            {bookmarked ? (
+            {data.bookmark ? (
               <TurnedInIcon sx={{ color: "#ff9800", fontSize: 24 }} />
             ) : (
               <TurnedInNotIcon sx={{ color: "#172C66", fontSize: 24 }} />
@@ -150,7 +112,6 @@ export const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
           </Box>
         </Box>
 
-        {/* グループ説明 */}
         <Typography
           sx={{
             fontSize: 13,
@@ -164,7 +125,6 @@ export const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
           {data.group_description}
         </Typography>
 
-        {/* タグ一覧 */}
         <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap", mt: 0.5 }}>
           {data.tags.map((tag) => (
             <Chip
