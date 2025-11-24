@@ -1,5 +1,6 @@
+// src/pages/departments.tsx
 import {
-  Create,
+  // Create,
   Datagrid,
   DeleteButton,
   Edit,
@@ -11,9 +12,12 @@ import {
   ReferenceInput,
   AutocompleteInput,
   SelectInput,
+  useRedirect
 } from "react-admin";
 
-// フィルター定義
+import { Card, CardContent, Typography, Divider, Grid, Box, Button, Stack } from "@mui/material";
+
+// =================== Filters ===================
 const departmentFilters = [
   <ReferenceInput
     source="id"
@@ -55,9 +59,15 @@ const departmentFilters = [
   />,
 ];
 
+// =================== LIST ===================
 export const DepartmentList = () => (
   <List filters={departmentFilters}>
-    <Datagrid rowClick="edit">
+    <Datagrid
+      rowClick="edit"
+      sx={{
+        "& .RaDatagrid-headerCell": {  fontWeight: 700 },
+      }}
+    >
       <TextField source="id" label="학과 코드" />
       <TextField source="name" label="학과 이름" />
       <EditButton />
@@ -66,20 +76,87 @@ export const DepartmentList = () => (
   </List>
 );
 
+// =================== EDIT ===================
 export const DepartmentEdit = () => (
-  <Edit>
-    <SimpleForm>
-      <TextInput source="id" label="학과 코드" disabled />
-      <TextInput source="name" label="학과 이름" />
-    </SimpleForm>
-  </Edit>
+  // <Edit>
+    <Card sx={{ maxWidth: 650, margin: "24px auto", borderRadius: 4, p: 2, boxShadow: 6 }}>
+      <CardContent>
+        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+          학과 정보 수정
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          학과 정보를 수정할 수 있습니다.
+        </Typography>
+        <Divider sx={{ mb: 3 }} />
+
+        <SimpleForm toolbar={<CustomToolbar />}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <TextInput source="id" label="학과 코드" disabled fullWidth />
+            </Grid>
+            <Grid item xs={12}>
+              <TextInput source="name" label="학과 이름" fullWidth />
+            </Grid>
+          </Grid>
+        </SimpleForm>
+      </CardContent>
+    </Card>
+  // </Edit>
 );
 
+// =================== CREATE ===================
 export const DepartmentCreate = () => (
-  <Create>
-    <SimpleForm>
-      <TextInput source="id" label="학과 코드" />
-      <TextInput source="name" label="학과 이름" />
-    </SimpleForm>
-  </Create>
+  // <Create sx={{backgroundColor:"#1546"}}>
+    <Card sx={{ maxWidth: 650, margin: "24px auto", borderRadius: 4, p: 2, boxShadow: 6 }}>
+      <CardContent>
+        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+          학과 생성
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          새로운 학과 정보를 등록해주세요.
+        </Typography>
+        <Divider sx={{ mb: 3 }} />
+
+        <SimpleForm toolbar={<CustomToolbar />}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <TextInput source="id" label="학과 코드" fullWidth />
+            </Grid>
+            <Grid item xs={12}>
+              <TextInput source="name" label="학과 이름" fullWidth />
+            </Grid>
+          </Grid>
+        </SimpleForm>
+      </CardContent>
+    </Card>
+  // </Create>
 );
+
+// =================== Custom Buttons ===================
+const CustomToolbar = () => {
+  const redirect = useRedirect();
+
+  const handleCancel = () => {
+    redirect("/departments"); // DepartmentList の URL
+  };
+
+  return (
+    <Box sx={{ mt: 3 }}>
+      <Stack direction="row" spacing={2} justifyContent="flex-end">
+        <Button variant="outlined" color="inherit" onClick={handleCancel}>
+          취소
+        </Button>
+
+        <Button
+          variant="contained"
+          sx={{ boxShadow: 3 }}
+          type="submit" // submitでフォーム保存
+        >
+          저장
+        </Button>
+      </Stack>
+    </Box>
+  );
+};
+
+export default CustomToolbar;
