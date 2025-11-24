@@ -90,6 +90,7 @@ export const MyCalendar = () => {
         display: 'flex',
         gap: 1,
         minHeight: '95vh',
+        maxHeight: '96vh',
         p: 3,
         background: 'linear-gradient(135deg, #fef6e4 0%, #fef6e4 100%)',
       }}
