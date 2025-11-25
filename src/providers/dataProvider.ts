@@ -16,6 +16,7 @@ const ID_FIELD_MAP: Record<string, string> = {
   departments: "department_code",
   studentclasses: "student_class_code",
   users: "user_code",
+  groupitems: "tag_id", // 예시: tag 리소스
   // 필요한 리소스 추가
 };
 
@@ -66,10 +67,13 @@ export const dataProvider: DataProvider = {
     });
   },
 
-  getOne: (resource, params) =>
-    httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
+  getOne: (resource, params) => {
+    const query = params.meta ? stringify(params.meta) : "";
+    const url = `${apiUrl}/${resource}/${params.id}${query ? `?${query}` : ""}`;
+    return httpClient(url).then(({ json }) => ({
       data: transformResponse(resource, json),
-    })),
+    }));
+  },
 
   getMany: (resource, params) => {
     const query = {
