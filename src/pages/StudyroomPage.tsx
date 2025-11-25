@@ -21,8 +21,6 @@ import {
   useUpdate,
   useNotify,
   useGetOne,
-  SaveButton,
-  Toolbar,
 } from "react-admin";
 import { Box, Typography, Tabs, Tab } from "@mui/material";
 import { useState } from "react";
@@ -68,7 +66,6 @@ export const StudyroomCreate = () => {
   );
 };
 
-// TODO: 백엔드 완성 후 수정 필요
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -95,6 +92,7 @@ const StudyroomEditContent = () => {
   const notify = useNotify();
   const [updateBasic] = useUpdate();
   const [updateOperating] = useUpdate();
+  const [updateException] = useUpdate();
 
   const { data: studyroomData } = useGetOne(
     "studyrooms",
@@ -106,6 +104,16 @@ const StudyroomEditContent = () => {
   const { data: operatingData } = useGetOne(
     "room-operating",
     { id: record?.id },
+    { enabled: !!record?.id },
+  );
+
+  // 휴일 데이터 가져오기 (fromDate 쿼리 파라미터 포함)
+  const { data: exceptionData } = useGetOne(
+    "room-exception",
+    {
+      id: record?.id,
+      meta: { from_date: new Date().toISOString().split("T")[0] },
+    },
     { enabled: !!record?.id },
   );
 
@@ -145,33 +153,18 @@ const StudyroomEditContent = () => {
     }
   };
 
+  // TODO: 날짜 동적으로 설정 가능하도록 변경
   const handleExceptionSave = async (data: any) => {
     try {
-      // ISO 8601 형식을 HH:MM으로 변환
-      const transformedExceptions = data.exceptions?.map((exception: any) => ({
-        ...exception,
-        start: exception.start
-          ? new Date(exception.start).toLocaleTimeString("en-GB", {
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: false,
-            })
-          : exception.start,
-        end: exception.end
-          ? new Date(exception.end).toLocaleTimeString("en-GB", {
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: false,
-            })
-          : exception.end,
-      }));
-
       await updateException("room-exception", {
         id: record.id,
-        data: { exceptions: transformedExceptions },
+        data: {
+          exceptions: data.exceptions,
+          from_date: new Date().toISOString().split("T")[0],
+        },
         previousData: record,
       });
-      notify("휴일/예외가 저장되었습니다", { type: "success" });
+      notify("휴일이 저장되었습니다", { type: "success" });
     } catch (error) {
       notify("저장 실패", { type: "error" });
     }
@@ -182,7 +175,7 @@ const StudyroomEditContent = () => {
       <Tabs value={tabValue} onChange={(_, newValue) => setTabValue(newValue)}>
         <Tab label="기본 정보" />
         <Tab label="정기 운영시간" />
-        <Tab label="휴일/예외 설정" />
+        <Tab label="휴일 설정" />
       </Tabs>
 
       {/* 기본 정보 탭 */}
@@ -255,32 +248,26 @@ const StudyroomEditContent = () => {
         </SimpleForm>
       </TabPanel>
 
-      {/* 휴일/예외 설정 탭 */}
+      {/* 휴일 설정 탭 */}
       <TabPanel value={tabValue} index={2}>
-        <SimpleForm record={record} onSubmit={handleExceptionSave}>
+        <SimpleForm
+          record={{ exceptions: exceptionData?.data || [] }}
+          onSubmit={handleExceptionSave}
+          resetOptions={{ keepDirtyValues: true }}
+        >
           <Typography variant="h6" gutterBottom>
-            특정 날짜 예외 설정
+            휴일 설정
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            정기 운영시간과 다르게 운영하거나 휴무하는 날짜를 추가하세요.
+            정기 운영시간과 다르게 휴무하는 날짜를 추가하세요.
           </Typography>
           <Box sx={{ mt: 2 }}>
             <ArrayInput source="exceptions" label="">
               <SimpleFormIterator inline sx={{ width: "100%" }}>
-                <DateInput source="date" label="날짜" />
+                <DateInput source="holiday_date" label="날짜" />
                 <TextInput source="reason" label="사유" />
-                <SelectInput
-                  source="status"
-                  label="운영 상태"
-                  choices={[
-                    { id: "closed", name: "휴무" },
-                    { id: "custom", name: "시간 변경" },
-                    { id: "24h", name: "24시간 운영" },
-                  ]}
-                  defaultValue="closed"
-                />
-                <TimeInput source="start" label="시작 시간 (변경 시)" />
-                <TimeInput source="end" label="종료 시간 (변경 시)" />
+                <TimeInput source="opening_time" label="시작 시간 (변경 시)" />
+                <TimeInput source="closing_time" label="종료 시간 (변경 시)" />
               </SimpleFormIterator>
             </ArrayInput>
           </Box>
