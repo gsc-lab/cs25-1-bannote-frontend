@@ -17,7 +17,6 @@ import {
   ArrayInput,
   SimpleFormIterator,
   DateInput,
-  BooleanInput,
   useRecordContext,
   useUpdate,
   useNotify,
@@ -81,11 +80,11 @@ const TabPanel = (props: TabPanelProps) => {
   return (
     <div
       role="tabpanel"
-      hidden={value !== index}
       id={`studyroom-tabpanel-${index}`}
+      style={{ display: value === index ? "block" : "none" }}
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      <Box sx={{ p: 3 }}>{children}</Box>
     </div>
   );
 };
@@ -96,18 +95,16 @@ const StudyroomEditContent = () => {
   const notify = useNotify();
   const [updateBasic] = useUpdate();
   const [updateOperating] = useUpdate();
-  const [updateException] = useUpdate();
 
-  // 운영시간 데이터 가져오기
-  const { data: operatingData, isLoading: operatingLoading } = useGetOne(
-    "room-operating",
+  const { data: studyroomData } = useGetOne(
+    "studyrooms",
     { id: record?.id },
     { enabled: !!record?.id },
   );
 
-  // 휴일/예외 데이터 가져오기
-  const { data: exceptionData, isLoading: exceptionLoading } = useGetOne(
-    "room-exception",
+  // 운영시간 데이터 가져오기
+  const { data: operatingData } = useGetOne(
+    "room-operating",
     { id: record?.id },
     { enabled: !!record?.id },
   );
@@ -132,31 +129,14 @@ const StudyroomEditContent = () => {
   };
 
   const handleOperatingSave = async (data: any) => {
+    const updateSchedule = data.regular_schedule.map((schedule: any) => ({
+      ...schedule,
+      room_id: record.id,
+    }));
     try {
-      // ISO 8601 형식을 HH:MM으로 변환
-      const transformedSchedule = data.regular_schedule?.map(
-        (schedule: any) => ({
-          ...schedule,
-          opening_time: schedule.opening_time
-            ? new Date(schedule.opening_time).toLocaleTimeString("en-GB", {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: false,
-              })
-            : schedule.opening_time,
-          closing_time: schedule.closing_time
-            ? new Date(schedule.closing_time).toLocaleTimeString("en-GB", {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: false,
-              })
-            : schedule.closing_time,
-        }),
-      );
-
       await updateOperating("room-operating", {
         id: record.id,
-        data: { regular_schedule: transformedSchedule },
+        data: { operating_hours: updateSchedule },
         previousData: record,
       });
       notify("운영시간이 저장되었습니다", { type: "success" });
@@ -207,7 +187,11 @@ const StudyroomEditContent = () => {
 
       {/* 기본 정보 탭 */}
       <TabPanel value={tabValue} index={0}>
-        <SimpleForm record={record} onSubmit={handleBasicSave}>
+        <SimpleForm
+          record={studyroomData?.data}
+          onSubmit={handleBasicSave}
+          resetOptions={{ keepDirtyValues: true }}
+        >
           <TextInput source="id" disabled label="스터디룸 코드" />
           <TextInput source="name" label="스터디룸 이름" />
           <ReferenceInput source="department_code" reference="departments">
@@ -219,11 +203,15 @@ const StudyroomEditContent = () => {
 
       {/* 정기 운영시간 탭 */}
       <TabPanel value={tabValue} index={1}>
-        <SimpleForm record={record} onSubmit={handleOperatingSave}>
+        <SimpleForm
+          record={{ regular_schedule: operatingData?.data || [] }}
+          onSubmit={handleOperatingSave}
+          resetOptions={{ keepDirtyValues: true }}
+        >
           <Typography variant="h6" gutterBottom>
             요일별 운영시간 설정
           </Typography>
-          <Box sx={{ mt: 2 }}>
+          <Box sx={{ mt: 3 }}>
             <ArrayInput source="regular_schedule" label="">
               <SimpleFormIterator
                 inline
@@ -234,28 +222,32 @@ const StudyroomEditContent = () => {
                   source="day_of_week"
                   label="요일"
                   choices={[
-                    { id: "1", name: "월요일" },
-                    { id: "2", name: "화요일" },
-                    { id: "3", name: "수요일" },
-                    { id: "4", name: "목요일" },
-                    { id: "5", name: "금요일" },
-                    { id: "6", name: "토요일" },
-                    { id: "7", name: "일요일" },
+                    { id: 1, name: "월요일" },
+                    { id: 2, name: "화요일" },
+                    { id: 3, name: "수요일" },
+                    { id: 4, name: "목요일" },
+                    { id: 5, name: "금요일" },
+                    { id: 6, name: "토요일" },
+                    { id: 7, name: "일요일" },
                   ]}
-                  sx={{ minWidth: 120 }}
+                  sx={{ minWidth: 120, mt: 0 }}
                 />
-                <TimeInput source="opening_time" label="시작 시간" />
-                <TimeInput source="closing_time" label="종료 시간" />
-                <NumberInput
+                {/* TODO 시간은 10분 단위로 선택 가능하게 설정 */}
+                <TextInput
+                  source="opening_time"
+                  label="시작 시간"
+                  type="time"
+                />
+                <TextInput
+                  source="closing_time"
+                  label="종료 시간"
+                  type="time"
+                />
+                <TextInput
                   source="day_maximum_time"
                   label="일 최대 이용 시간"
-                  min={0}
-                  step={0.5}
-                />
-                <BooleanInput
-                  source="is_open"
-                  label="운영"
-                  defaultValue={true}
+                  placeholder="03:00"
+                  helperText="HH:MM 형식 (예: 03:00 = 3시간)"
                 />
               </SimpleFormIterator>
             </ArrayInput>
