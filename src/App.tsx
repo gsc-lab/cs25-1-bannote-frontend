@@ -19,7 +19,7 @@ import { Route } from "react-router-dom";
 import { authProvider } from "./providers/authProvider";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
-import { ItemModal } from "./components/schedule/ItemModal"; 
+import { ItemModal } from "./components/schedule/ItemModal";
 import theme from "./theme";
 import { AllowedDomainCreate, AllowedDomainList } from "./pages/AllowedDomains";
 import { GroupItemList } from "./components/schedule/GroupItemList";
@@ -28,8 +28,8 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import Diversity1Icon from "@mui/icons-material/Diversity1";
-import StarsIcon from '@mui/icons-material/Stars';
-import AddBoxIcon from '@mui/icons-material/AddBox';
+import StarsIcon from "@mui/icons-material/Stars";
+import AddBoxIcon from "@mui/icons-material/AddBox";
 import {
   StudyroomList,
   StudyroomCreate,
@@ -38,6 +38,7 @@ import {
 import { ScheduleMain } from "./components/schedule/ScheduleMain";
 import CalendarViewWeekIcon from "@mui/icons-material/CalendarViewWeek";
 import Settings from "./pages/Settings";
+import Reservation from "./pages/Reservation";
 
 export const App = () => (
   <Admin
@@ -100,7 +101,6 @@ export const App = () => (
       icon={AddBoxIcon}
     /> */}
 
-
     <Resource
       name="studyrooms"
       // @ts-ignore
@@ -112,15 +112,18 @@ export const App = () => (
     />
     <Resource name="room-operating" />
     <Resource name="room-exception" />
-  {/* ヘッダーやメニュー付きで表示したいページ */}
-  <CustomRoutes>
-    <Route path="/settings" element={<Settings />} />
-    {/* <Route path="/item-modal" element={<ItemModalPage />} /> */}
-  </CustomRoutes>
 
-  {/* ログイン・登録などのヘッダー不要ページ */}
-  <CustomRoutes noLayout>
-    <Route path="/register" element={<RegisterPage />} />
-  </CustomRoutes>
+    <Resource name="reservation" options={{ label: "스터디룸 예약" }} />
+    {/* ヘッダーやメニュー付きで表示したいページ */}
+    <CustomRoutes>
+      <Route path="/settings" element={<Settings />} />
+      <Route path="/reservation" element={<Reservation />} />
+      {/* <Route path="/item-modal" element={<ItemModalPage />} /> */}
+    </CustomRoutes>
+
+    {/* ログイン・登録などのヘッダー不要ページ */}
+    <CustomRoutes noLayout>
+      <Route path="/register" element={<RegisterPage />} />
+    </CustomRoutes>
   </Admin>
 );

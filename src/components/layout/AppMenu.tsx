@@ -4,7 +4,7 @@ import { Menu } from "react-admin";
 import Box from "@mui/material/Box";
 import SchoolIcon from "@mui/icons-material/School";
 import EventNoteIcon from "@mui/icons-material/EventNote";
-import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
+import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 
 const menuDefault = "#cfd7e9ff";
 const menuHover = "#a4b1d3ff";
@@ -101,5 +101,6 @@ export const AppMenu = () => (
       </Typography>
     </Box>
     <Menu.ResourceItem name="studyrooms" />
+    <Menu.ResourceItem name="reservation" />
   </Menu>
 );
