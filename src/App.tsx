@@ -1,4 +1,4 @@
-import { Admin, CustomRoutes, Resource } from "react-admin";
+import { Admin, Authenticated, CustomRoutes, Resource } from "react-admin";
 import { AppLayout } from "./components/layout/AppLayout";
 import { dataProvider } from "./providers/dataProvider";
 import {
@@ -118,7 +118,14 @@ export const App = () => (
     {/* ヘッダーやメニュー付きで表示したいページ */}
     <CustomRoutes>
       <Route path="/settings" element={<Settings />} />
-      <Route path="/reservation" element={<Reservation />} />
+      <Route
+        path="/reservation"
+        element={
+          <Authenticated>
+            <Reservation />
+          </Authenticated>
+        }
+      />
       {/* <Route path="/item-modal" element={<ItemModalPage />} /> */}
     </CustomRoutes>
 
