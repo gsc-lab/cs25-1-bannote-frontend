@@ -7,6 +7,10 @@ import { useCallback, useEffect, useState } from "react";
 import { useGetList } from "react-admin";
 import CreateResourceModal from "./CreateReservationModal";
 import { useCreateReservationModal } from "../../hooks/useCreateReservationModal";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { Button, Box } from "@mui/material";
 
 type User = {
   code: string;
@@ -27,6 +31,48 @@ type Event = {
 const localizer = dayjsLocalizer(dayjs);
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
+
+// Custom Toolbar with DatePicker
+const CustomToolbar = ({ label, onNavigate, date }: any) => {
+  const [selectedDate, setSelectedDate] = useState(dayjs(date));
+
+  useEffect(() => {
+    setSelectedDate(dayjs(date));
+  }, [date]);
+
+  const handleDateChange = (newDate: any) => {
+    if (newDate) {
+      setSelectedDate(newDate);
+      onNavigate("DATE", newDate.toDate());
+    }
+  };
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "10px",
+        borderBottom: "1px solid #ddd",
+      }}
+    >
+      <Button onClick={() => onNavigate("PREV")}>이전</Button>
+      <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            value={selectedDate}
+            onChange={handleDateChange}
+            format="YYYY-MM-DD"
+            slotProps={{ textField: { size: "small" } }}
+          />
+        </LocalizationProvider>
+        <Button onClick={() => onNavigate("TODAY")}>오늘</Button>
+      </Box>
+      <Button onClick={() => onNavigate("NEXT")}>다음</Button>
+    </Box>
+  );
+};
 
 // resize, move 시 서버에 업데이트 요청
 const updateReservation = async (
@@ -103,20 +149,32 @@ const Resource = (props: any) => {
     })) || [];
 
   const [myEvents, setEvents] = useState<Event[]>([]);
+  const [currentDate, setCurrentDate] = useState(new Date());
   const { modalOpen, selectedSlot, openModal, closeModal } =
     useCreateReservationModal();
 
   // 새로고침 함수
-  const refreshReservations = useCallback(() => {
-    if (!studyrooms || studyrooms.length === 0) return;
-    const resourceIds = resources.map((res) => res.resourceId);
-    const now = new Date();
-    getReservations(now, now, resourceIds, setEvents);
-  }, [studyrooms, resources]);
+  const refreshReservations = useCallback(
+    (date?: Date) => {
+      if (!studyrooms || studyrooms.length === 0) return;
+      const resourceIds = resources.map((res) => res.resourceId);
+      const targetDate = date || currentDate;
+      getReservations(targetDate, targetDate, resourceIds, setEvents);
+    },
+    [studyrooms, resources, currentDate],
+  );
 
   useEffect(() => {
     refreshReservations();
   }, [studyrooms]);
+
+  const handleNavigate = useCallback(
+    (newDate: Date) => {
+      setCurrentDate(newDate);
+      refreshReservations(newDate);
+    },
+    [refreshReservations],
+  );
 
   const handleSelectSlot = useCallback(
     ({
@@ -216,6 +274,12 @@ const Resource = (props: any) => {
           defaultView={Views.DAY}
           views={views}
           step={15}
+          date={currentDate}
+          scrollToTime={new Date(1970, 1, 1, 9, 0, 0)}
+          onNavigate={handleNavigate}
+          components={{
+            toolbar: CustomToolbar,
+          }}
         />
       </div>
 
