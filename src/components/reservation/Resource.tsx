@@ -106,10 +106,16 @@ const Resource = (props: any) => {
   const { modalOpen, selectedSlot, openModal, closeModal } =
     useCreateReservationModal();
 
-  useEffect(() => {
-    const resourceIds: number[] = resources.map((res) => res.resourceId);
+  // 새로고침 함수
+  const refreshReservations = useCallback(() => {
+    if (!studyrooms || studyrooms.length === 0) return;
+    const resourceIds = resources.map((res) => res.resourceId);
     const now = new Date();
     getReservations(now, now, resourceIds, setEvents);
+  }, [studyrooms, resources]);
+
+  useEffect(() => {
+    refreshReservations();
   }, [studyrooms]);
 
   const handleSelectSlot = useCallback(
@@ -133,7 +139,7 @@ const Resource = (props: any) => {
   );
 
   const moveEvent = useCallback(
-    ({
+    async ({
       event,
       start,
       end,
@@ -151,28 +157,32 @@ const Resource = (props: any) => {
         event.allDay = true;
       }
 
-      updateReservation(event.id, start, end, resourceId, event.title);
-
-      setEvents((prev) => {
-        const existing = prev.find((ev) => ev.id === event.id) ?? {};
-        const filtered = prev.filter((ev) => ev.id !== event.id);
-        return [...filtered, { ...existing, start, end, resourceId, allDay }];
-      });
+      try {
+        await updateReservation(event.id, start, end, resourceId, event.title);
+        refreshReservations();
+      } catch (error) {
+        console.error("Failed to move event:", error);
+      }
     },
-    [setEvents],
+    [refreshReservations],
   );
 
   const resizeEvent = useCallback(
-    ({ event, start, end }) => {
-      updateReservation(event.id, start, end, event.resourceId, event.title);
-
-      setEvents((prev) => {
-        const existing = prev.find((ev) => ev.id === event.id) ?? {};
-        const filtered = prev.filter((ev) => ev.id !== event.id);
-        return [...filtered, { ...existing, start, end }];
-      });
+    async ({ event, start, end }: { event: Event; start: Date; end: Date }) => {
+      try {
+        await updateReservation(
+          event.id,
+          start,
+          end,
+          event.resourceId,
+          event.title,
+        );
+        refreshReservations();
+      } catch (error) {
+        console.error("Failed to resize event:", error);
+      }
     },
-    [setEvents],
+    [refreshReservations],
   );
 
   if (isLoading) {
@@ -212,6 +222,7 @@ const Resource = (props: any) => {
       <CreateResourceModal
         open={modalOpen}
         onClose={closeModal}
+        onSuccess={refreshReservations}
         start={selectedSlot.start}
         end={selectedSlot.end}
         resourceId={selectedSlot.resourceId}

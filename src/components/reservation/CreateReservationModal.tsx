@@ -15,6 +15,7 @@ import dayjs from "dayjs";
 interface CreateResourceModalProps {
   open: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
   start: Date | null;
   end: Date | null;
   resourceId: number | null;
@@ -23,6 +24,7 @@ interface CreateResourceModalProps {
 const CreateReservationModal = ({
   open,
   onClose,
+  onSuccess,
   start,
   end,
   resourceId,
@@ -42,6 +44,7 @@ const CreateReservationModal = ({
         },
       });
       notify("예약이 생성되었습니다", { type: "success" });
+      onSuccess?.();
       onClose();
     } catch (error) {
       notify("예약 생성 실패", { type: "error" });
