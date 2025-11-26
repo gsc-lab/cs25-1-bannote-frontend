@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { useCallback, useEffect, useState } from "react";
 import { useGetList } from "react-admin";
 import CreateResourceModal from "./CreateReservationModal";
+import UpdateReservationModal from "./UpdateReservationModal";
 import { useCreateReservationModal } from "../../hooks/useCreateReservationModal";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -17,7 +18,7 @@ type User = {
   name: string;
 };
 
-type Event = {
+export type Event = {
   id: string; // 예약 코드 code
   title: string; // 예약 목적 purpose
   start: Date; // 예약 시작 시간 start_time
@@ -150,6 +151,8 @@ const Resource = (props: any) => {
 
   const [myEvents, setEvents] = useState<Event[]>([]);
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const { modalOpen, selectedSlot, openModal, closeModal } =
     useCreateReservationModal();
 
@@ -191,10 +194,15 @@ const Resource = (props: any) => {
     [openModal],
   );
 
-  const handleSelectEvent = useCallback(
-    (event) => window.alert(event.title),
-    [],
-  );
+  const handleSelectEvent = useCallback((event: Event) => {
+    setSelectedEvent(event);
+    setUpdateModalOpen(true);
+  }, []);
+
+  const handleCloseUpdateModal = useCallback(() => {
+    setUpdateModalOpen(false);
+    setSelectedEvent(null);
+  }, []);
 
   const moveEvent = useCallback(
     async ({
@@ -290,6 +298,13 @@ const Resource = (props: any) => {
         start={selectedSlot.start}
         end={selectedSlot.end}
         resourceId={selectedSlot.resourceId}
+      />
+
+      <UpdateReservationModal
+        open={updateModalOpen}
+        onClose={handleCloseUpdateModal}
+        onSuccess={refreshReservations}
+        event={selectedEvent}
       />
     </>
   );
