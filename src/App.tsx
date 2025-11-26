@@ -114,6 +114,7 @@ export const App = () => (
     <Resource name="room-exception" />
 
     <Resource name="reservation" options={{ label: "스터디룸 예약" }} />
+    <Resource name="reservations" />
     {/* ヘッダーやメニュー付きで表示したいページ */}
     <CustomRoutes>
       <Route path="/settings" element={<Settings />} />

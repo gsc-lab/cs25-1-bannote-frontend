@@ -3,7 +3,10 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import dayjs from "dayjs";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useGetList } from "react-admin";
+import CreateResourceModal from "./CreateReservationModal";
+import { useCreateReservationModal } from "../../hooks/useCreateReservationModal";
 
 type User = {
   code: string;
@@ -18,65 +21,117 @@ type Event = {
   resourceId: number; // room_id
   priority: number; // 우선순위
   users: User[]; // 예약한 사용자 목록
+  allDay?: boolean;
 };
 
 const localizer = dayjsLocalizer(dayjs);
-const resources = [
-  { resourceId: 1, resourceTitle: "Room A" },
-  { resourceId: 2, resourceTitle: "Room B" },
-  { resourceId: 3, resourceTitle: "Room C" },
-];
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 
-let eventId = 0;
-const today = new Date();
-const events = Array.from({ length: 20 }, (_, k) => k).flatMap((i) => {
-  const currentResource = resources[i % resources.length];
-  const dayDiff = i % 7;
+// resize, move 시 서버에 업데이트 요청
+const updateReservation = async (
+  eventId: string,
+  startDate: Date,
+  endDate: Date,
+  resourceId: number,
+  purpose?: string,
+) => {
+  const start_time = dayjs(startDate).format("YYYY-MM-DDTHH:mm:ss[Z]");
+  const end_time = dayjs(endDate).format("YYYY-MM-DDTHH:mm:ss[Z]");
 
-  return Array.from({ length: 5 }, (_, j) => ({
-    id: eventId++,
-    title: `Event ${i + j} _ ${currentResource.resourceTitle}`,
-    start: new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate() + dayDiff,
-      9 + (j % 4),
-      0,
-      0,
-    ),
-    end: new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate() + dayDiff,
-      11 + (j % 4),
-      0,
-      0,
-    ),
-    resourceId: currentResource.resourceId,
-  }));
-});
+  await fetch(`/api/reservations/${eventId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      start_time,
+      end_time,
+      room_id: resourceId,
+      purpose,
+    }),
+  });
+};
+
+// 예약 불러오기
+const getReservations = async (
+  startDate: Date,
+  endDate: Date,
+  resourceIds: number[],
+  setEvents: (events: Event[]) => void,
+) => {
+  const startOfDay = dayjs(startDate)
+    .startOf("day")
+    .format("YYYY-MM-DDTHH:mm:ss[Z]");
+  const endOfDay = dayjs(endDate).endOf("day").format("YYYY-MM-DDTHH:mm:ss[Z]");
+
+  fetch(
+    `/api/reservations?start_time=${startOfDay}&end_time=${endOfDay}&room_ids=${resourceIds}`,
+    {
+      method: "GET",
+    },
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+
+      setEvents(
+        data.data.map((reservation: any) => ({
+          id: reservation.code,
+          title: reservation.purpose,
+          start: new Date(reservation.start_time.replace("Z", "")),
+          end: new Date(reservation.end_time.replace("Z", "")),
+          resourceId: reservation.room_id,
+          priority: reservation.priority,
+          users: reservation.users,
+        })),
+      );
+    });
+};
 
 const Resource = (props: any) => {
   const views = ["day"];
 
-  const [myEvents, setEvents] = useState(events);
+  const { data: studyrooms, isLoading } = useGetList("studyrooms", {
+    pagination: { page: 1, perPage: 100 },
+  });
+
+  const resources =
+    studyrooms?.map((room: any) => ({
+      resourceId: room.id,
+      resourceTitle: room.name,
+    })) || [];
+
+  const [myEvents, setEvents] = useState<Event[]>([]);
+  const { modalOpen, selectedSlot, openModal, closeModal } =
+    useCreateReservationModal();
+
+  useEffect(() => {
+    const resourceIds: number[] = resources.map((res) => res.resourceId);
+    const now = new Date();
+    getReservations(now, now, resourceIds, setEvents);
+  }, [studyrooms]);
 
   const handleSelectSlot = useCallback(
-    ({ start, end, resourceId }) => {
-      const title = window.prompt("New Event Name");
-      if (title) {
-        setEvents((prev) => [...prev, { start, end, title, resourceId }]);
-      }
+    ({
+      start,
+      end,
+      resourceId,
+    }: {
+      start: Date;
+      end: Date;
+      resourceId: number;
+    }) => {
+      openModal({ start, end, resourceId });
     },
-    [setEvents],
+    [openModal],
   );
 
   const handleSelectEvent = useCallback(
     (event) => window.alert(event.title),
     [],
   );
+
   const moveEvent = useCallback(
     ({
       event,
@@ -84,16 +139,19 @@ const Resource = (props: any) => {
       end,
       resourceId,
       isAllDay: droppedOnAllDaySlot = false,
+    }: {
+      event: Event;
+      start: Date;
+      end: Date;
+      resourceId: number;
+      isAllDay?: boolean;
     }) => {
       const { allDay } = event;
       if (!allDay && droppedOnAllDaySlot) {
         event.allDay = true;
       }
 
-      console.log(event);
-      console.log("start: ", start);
-      console.log("end: ", end);
-      console.log("resourceId: ", resourceId);
+      updateReservation(event.id, start, end, resourceId, event.title);
 
       setEvents((prev) => {
         const existing = prev.find((ev) => ev.id === event.id) ?? {};
@@ -106,6 +164,8 @@ const Resource = (props: any) => {
 
   const resizeEvent = useCallback(
     ({ event, start, end }) => {
+      updateReservation(event.id, start, end, event.resourceId, event.title);
+
       setEvents((prev) => {
         const existing = prev.find((ev) => ev.id === event.id) ?? {};
         const filtered = prev.filter((ev) => ev.id !== event.id);
@@ -115,34 +175,48 @@ const Resource = (props: any) => {
     [setEvents],
   );
 
+  if (isLoading) {
+    return <div>Loading studyrooms...</div>;
+  }
+
   return (
-    <div
-      style={{
-        height: "80vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "white",
-        borderRadius: "2%",
-      }}
-    >
-      <DragAndDropCalendar
-        selectable
-        localizer={localizer}
-        events={myEvents}
-        style={{ height: "96%", width: "96%" }}
-        resources={resources}
-        resourceIdAccessor="resourceId"
-        resourceTitleAccessor="resourceTitle"
-        onSelectSlot={handleSelectSlot}
-        onSelectEvent={handleSelectEvent}
-        onEventDrop={moveEvent}
-        onEventResize={resizeEvent}
-        defaultView={Views.DAY}
-        views={views}
-        step={15}
+    <>
+      <div
+        style={{
+          height: "80vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "white",
+          borderRadius: "2%",
+        }}
+      >
+        <DragAndDropCalendar
+          selectable
+          localizer={localizer}
+          events={myEvents}
+          style={{ height: "96%", width: "96%" }}
+          resources={resources}
+          resourceIdAccessor="resourceId"
+          resourceTitleAccessor="resourceTitle"
+          onSelectSlot={handleSelectSlot}
+          onSelectEvent={handleSelectEvent}
+          onEventDrop={moveEvent}
+          onEventResize={resizeEvent}
+          defaultView={Views.DAY}
+          views={views}
+          step={15}
+        />
+      </div>
+
+      <CreateResourceModal
+        open={modalOpen}
+        onClose={closeModal}
+        start={selectedSlot.start}
+        end={selectedSlot.end}
+        resourceId={selectedSlot.resourceId}
       />
-    </div>
+    </>
   );
 };
 
