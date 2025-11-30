@@ -39,6 +39,7 @@ import { ScheduleMain } from "./components/schedule/ScheduleMain";
 import CalendarViewWeekIcon from "@mui/icons-material/CalendarViewWeek";
 import Settings from "./pages/Settings";
 import Reservation from "./pages/Reservation";
+import { TagsCreate, TagsList } from "./pages/Tags";
 
 export const App = () => (
   <Admin
@@ -82,6 +83,14 @@ export const App = () => (
       options={{ label: "승인" }}
       icon={HowToRegIcon}
     />
+
+    <Resource
+      name="schedule-tags"
+      list={TagsList}
+      create={TagsCreate}
+      options={{ label: "태그 관리" }}
+    />
+    <Resource name="groups" options={{ label: "그룹 관리" }} />
     <Resource
       name="groupitems"
       list={GroupItemList}

@@ -88,6 +88,8 @@ export const AppMenu = () => (
         일정 관리
       </Typography>
     </Box>
+    <Menu.ResourceItem name="schedule-tags" />
+    <Menu.ResourceItem name="groups" />
     <Menu.ResourceItem name="groupitems" />
     <Menu.ResourceItem name="calendar" />
     <Menu.ResourceItem name="item_modal" />

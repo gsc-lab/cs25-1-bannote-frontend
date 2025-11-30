@@ -16,8 +16,7 @@ const ID_FIELD_MAP: Record<string, string> = {
   departments: "department_code",
   studentclasses: "student_class_code",
   users: "user_code",
-  groupitems: "tag_id", // 예시: tag 리소스
-  // 필요한 리소스 추가
+  "schedule-tags": "tag_id",
 };
 
 // 백엔드 응답을 React Admin 형식으로 변환
