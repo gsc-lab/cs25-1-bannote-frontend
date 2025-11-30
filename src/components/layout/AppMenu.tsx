@@ -89,7 +89,7 @@ export const AppMenu = () => (
       </Typography>
     </Box>
     <Menu.ResourceItem name="schedule-tags" />
-    <Menu.ResourceItem name="groups" />
+    <Menu.ResourceItem name="schedule-groups" />
     <Menu.ResourceItem name="groupitems" />
     <Menu.ResourceItem name="calendar" />
     <Menu.ResourceItem name="item_modal" />
