@@ -102,12 +102,7 @@ export const App = () => (
       edit={ScheduleGroupsEdit}
       options={{ label: "스케줄 그룹" }}
     />
-    <Resource
-      name="groupitems"
-      list={GroupItemList}
-      options={{ label: "태그" }}
-      icon={SellIcon}
-    />
+    <Resource name="groupitems" options={{ label: "태그" }} icon={SellIcon} />
     <Resource
       name="calendar"
       list={ScheduleMain}
@@ -143,6 +138,14 @@ export const App = () => (
         element={
           <Authenticated>
             <Reservation />
+          </Authenticated>
+        }
+      />
+      <Route
+        path="groupitems"
+        element={
+          <Authenticated>
+            <GroupItemList />
           </Authenticated>
         }
       />
