@@ -1,23 +1,36 @@
 // src/schedule/ScheduleMain.tsx
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { ScheduleAddGroupItem } from './ScheduleAddGroupItem';
-import { MyCalendar } from "./MainCarendar";
+import { MyCalendar } from "./MainCalendar";
+import { BookMarks } from "./BookMarks";
 
 export const ScheduleMain = () => {
-  return (
-    // <Box
-    //   sx={{
-    //     // Height: "50vh",
-    //     display: "flex",
-    //     gap: 3, // 左右の間隔
-    //     p: 3, // ページ全体の余白
-    //     backgroundColor: "#f5f6fa",
-    //     boxSizing: "border-box",
-    //   }}
-    // >
+  const userId = JSON.parse(localStorage.getItem("user") || "null")?.user_code;
+  const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>([]);
 
-    <MyCalendar />
+  const handleSelectedGroupsChange = (groupIds: string[]) => {
+    setSelectedGroupIds(groupIds);
+  };
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        gap: 1,
+        minHeight: "95vh",
+        maxHeight: "96vh",
+        p: 3,
+        background: "linear-gradient(135deg, #fef6e4 0%, #fef6e4 100%)",
+      }}
+    >
+      {/* 왼쪽 북마크 사이드바 */}
+      <BookMarks
+        userId={userId}
+        onSelectedGroupsChange={handleSelectedGroupsChange}
+      />
+
+      {/* 메인 캘린더 */}
+      <MyCalendar selectedGroupIds={selectedGroupIds} />
+    </Box>
   );
 };
