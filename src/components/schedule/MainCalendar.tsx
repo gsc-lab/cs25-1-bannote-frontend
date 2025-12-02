@@ -26,8 +26,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
 
 import tagListJson from "./tagList.json";
-import { ExternalEvent } from "./BookMarks";
 import { getVisibleDateRange } from "../../utils/dateUtils";
+import { useGetList } from "react-admin";
 
 // TAG_OPTIONSをJSONから作成
 const TAG_OPTIONS = tagListJson.tag_list_response.tags;
@@ -66,19 +66,35 @@ export const MyCalendar: React.FC<MyCalendarProps> = ({ selectedGroupIds }) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [currentView, setCurrentView] = useState<string>("week");
 
-  // 캘린더 뷰/날짜 변경 시 이벤트 로드
+  // 현재 보이는 날짜 범위 계산
+  const dateRange = getVisibleDateRange(currentDate, currentView);
+
+  // 스케줄 데이터 가져오기 (filter가 변경될 때마다 자동 재요청)
+  const { data, isLoading, error } = useGetList("schedule", {
+    pagination: { page: 1, perPage: 1000 },
+    filter: {
+      group_ids: selectedGroupIds.join(","),
+      start_date: dayjs(dateRange.start).format("YYYY-MM-DDT00:00:00"),
+      end_date: dayjs(dateRange.end).format("YYYY-MM-DDT23:59:59"),
+    },
+  });
+
+  // 데이터가 로드되면 이벤트 상태 업데이트
   useEffect(() => {
-    const dateRange = getVisibleDateRange(currentDate, currentView);
+    if (data) {
+      console.log("Loaded schedule data:", data);
 
-    console.log("selectedGroupIds:", selectedGroupIds);
-    console.log("visibleRange:", {
-      start: dayjs(dateRange.start).format("YYYY-MM-DD"),
-      end: dayjs(dateRange.end).format("YYYY-MM-DD"),
-    });
-
-    // TODO: 여기서 API 호출
-    // fetch(`/api/schedules?group_ids=${selectedGroupIds.join(',')}&start=${dateRange.start}&end=${dateRange.end}`)
-  }, [selectedGroupIds, currentDate, currentView]);
+      // TODO: 받아온 데이터를 CalendarEvent 형식으로 변환
+      // const calendarEvents = data.map(item => ({
+      //   id: item.id,
+      //   title: item.title,
+      //   start: new Date(item.start_time),
+      //   end: new Date(item.end_time),
+      //   ...
+      // }));
+      // setEvents(calendarEvents);
+    }
+  }, [data]);
 
   // 날짜 선택 핸들러
   const handleSelectSlot = useCallback((slotInfo: SlotInfo) => {
@@ -135,24 +151,6 @@ export const MyCalendar: React.FC<MyCalendarProps> = ({ selectedGroupIds }) => {
       ];
     });
   }, []);
-
-  // 외부 이벤트 드롭
-  const handleDropFromOutside = useCallback(
-    ({ start, end }: any) => {
-      if (draggedEvent) {
-        const newEvent: CalendarEvent = {
-          id: `${draggedEvent.id}-${Date.now()}`,
-          title: draggedEvent.title,
-          start: new Date(start),
-          end: new Date(end),
-          tags: [],
-          description: "",
-        };
-        setEvents((prev) => [...prev, newEvent]);
-      }
-    },
-    [draggedEvent],
-  );
 
   // 한국어 메시지
   const messages = {
@@ -230,7 +228,6 @@ export const MyCalendar: React.FC<MyCalendarProps> = ({ selectedGroupIds }) => {
           onSelectSlot={handleSelectSlot}
           onEventDrop={moveEvent}
           onEventResize={resizeEvent}
-          onDropFromOutside={handleDropFromOutside}
           draggableAccessor={() => true}
           messages={messages}
           step={15}
