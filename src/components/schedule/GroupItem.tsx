@@ -16,18 +16,18 @@ export interface Tag {
 }
 
 export interface GroupData {
-  group_id: string;
+  id: string;
   group_name: string;
   group_description: string;
   color_default: string;
   color_highlight: string;
-  tags: Tag[];
+  tags?: Tag[];
   bookmark: boolean;
 }
 
 interface GroupItemProps {
   data: GroupData;
-  onBookmarkToggle: (group_id: string) => void;
+  onBookmarkToggle: (group_id: string, status: boolean) => void;
 }
 
 export const GroupItem: React.FC<GroupItemProps> = ({
@@ -73,7 +73,7 @@ export const GroupItem: React.FC<GroupItemProps> = ({
             boxShadow: "0 4px 12px rgba(23,44,102,0.2)",
           }}
         >
-          {React.cloneElement(getIconByGroup(data.tags), {
+          {React.cloneElement(getIconByGroup(data.tags ? data.tags : []), {
             sx: {
               fontSize: 26,
               color:
@@ -133,7 +133,7 @@ export const GroupItem: React.FC<GroupItemProps> = ({
             <Box
               onClick={(e) => {
                 e.stopPropagation();
-                onBookmarkToggle(data.group_id);
+                onBookmarkToggle(data.id, data.bookmark);
               }}
               sx={{
                 cursor: "pointer",
@@ -165,31 +165,33 @@ export const GroupItem: React.FC<GroupItemProps> = ({
           </Typography>
 
           <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap", mt: 0.5 }}>
-            {data.tags.map((tag) => (
-              <Chip
-                key={tag.tag_id}
-                icon={<SellIcon sx={{ fontSize: 14 }} />}
-                label={tag.name}
-                size="small"
-                variant="outlined"
-                sx={{
-                  borderRadius: 2,
-                  fontSize: 11,
-                  height: 24,
-                  pl: 0.7,
-                  borderColor: "#172C66",
-                  color: "#172C66",
-                  backgroundColor: "#eef3ff",
-                  transition: "all 0.2s",
-                  "&:hover": {
-                    backgroundColor: "#172C66",
-                    color: "#fff",
-                    "& .MuiChip-icon": { color: "#fff" },
-                  },
-                  "& .MuiChip-icon": { color: "#172C66", fontSize: 14 },
-                }}
-              />
-            ))}
+            {data.tags
+              ? data.tags.map((tag) => (
+                  <Chip
+                    key={tag.tag_id}
+                    icon={<SellIcon sx={{ fontSize: 14 }} />}
+                    label={tag.name}
+                    size="small"
+                    variant="outlined"
+                    sx={{
+                      borderRadius: 2,
+                      fontSize: 11,
+                      height: 24,
+                      pl: 0.7,
+                      borderColor: "#172C66",
+                      color: "#172C66",
+                      backgroundColor: "#eef3ff",
+                      transition: "all 0.2s",
+                      "&:hover": {
+                        backgroundColor: "#172C66",
+                        color: "#fff",
+                        "& .MuiChip-icon": { color: "#fff" },
+                      },
+                      "& .MuiChip-icon": { color: "#172C66", fontSize: 14 },
+                    }}
+                  />
+                ))
+              : null}
           </Box>
         </Box>
       </Card>
