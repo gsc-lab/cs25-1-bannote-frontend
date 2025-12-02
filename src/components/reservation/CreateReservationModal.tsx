@@ -5,17 +5,17 @@ import {
   DateTimeInput,
   required,
   useNotify,
-  useCreate,
   Toolbar,
   SaveButton,
 } from "react-admin";
 import { Button } from "@mui/material";
 import dayjs from "dayjs";
+import { UserSearch } from "../common/UserSearch";
 
 interface CreateResourceModalProps {
   open: boolean;
   onClose: () => void;
-  onSuccess?: () => void;
+  onSuccess?: () => void | Promise<void>;
   start: Date | null;
   end: Date | null;
   resourceId: number | null;
@@ -30,21 +30,29 @@ const CreateReservationModal = ({
   resourceId,
 }: CreateResourceModalProps) => {
   const notify = useNotify();
-  const [create] = useCreate();
 
   const handleSubmit = async (data: any) => {
     try {
-      await create("reservations", {
-        data: {
+      const response = await fetch("/api/reservations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
           start_time: dayjs(data.start_time).format("YYYY-MM-DDTHH:mm:ss[Z]"),
           end_time: dayjs(data.end_time).format("YYYY-MM-DDTHH:mm:ss[Z]"),
           room_id: data.room_id,
           purpose: data.purpose,
-          user_code: data.user_code,
-        },
+          user_codes: data.user_codes || [],
+        }),
       });
+
+      if (!response.ok) {
+        throw new Error("Failed to create reservation");
+      }
+
       notify("예약이 생성되었습니다", { type: "success" });
-      onSuccess?.();
+      await onSuccess?.();
       onClose();
     } catch (error) {
       notify("예약 생성 실패", { type: "error" });
@@ -56,7 +64,7 @@ const CreateReservationModal = ({
     end_time: end,
     room_id: resourceId,
     purpose: "",
-    user_code: "",
+    user_codes: [],
   };
 
   const CustomToolbar = () => (
@@ -88,6 +96,7 @@ const CreateReservationModal = ({
             label="시작 시간"
             validate={required()}
             fullWidth
+            // TODO slotProps={{ htmlInput: { step: 1000 } }}  15분 단위로 선택하도록 설정
           />
           <DateTimeInput
             source="end_time"
@@ -96,12 +105,7 @@ const CreateReservationModal = ({
             fullWidth
           />
           <TextInput source="room_id" label="스터디룸 ID" readOnly fullWidth />
-          <TextInput
-            source="user_code"
-            label="유저 코드"
-            validate={required()}
-            fullWidth
-          />
+          <UserSearch source="user_codes" label="참가자 선택" />
         </SimpleForm>
       </DialogContent>
     </Dialog>

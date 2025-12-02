@@ -112,28 +112,31 @@ const getReservations = async (
     .format("YYYY-MM-DDTHH:mm:ss[Z]");
   const endOfDay = dayjs(endDate).endOf("day").format("YYYY-MM-DDTHH:mm:ss[Z]");
 
-  fetch(
+  const response = await fetch(
     `/api/reservations?start_time=${startOfDay}&end_time=${endOfDay}&room_ids=${resourceIds}`,
     {
       method: "GET",
     },
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
+  );
 
-      setEvents(
-        data.data.map((reservation: any) => ({
-          id: reservation.code,
-          title: reservation.purpose,
-          start: new Date(reservation.start_time.replace("Z", "")),
-          end: new Date(reservation.end_time.replace("Z", "")),
-          resourceId: reservation.room_id,
-          priority: reservation.priority,
-          users: reservation.users,
-        })),
-      );
-    });
+  const data = await response.json();
+  console.log(data);
+
+  if (data.data != undefined) {
+    setEvents(
+      data.data.map((reservation: any) => ({
+        id: reservation.code,
+        title: reservation.purpose,
+        start: new Date(reservation.start_time.replace("Z", "")),
+        end: new Date(reservation.end_time.replace("Z", "")),
+        resourceId: reservation.room_id,
+        priority: reservation.priority,
+        users: reservation.users,
+      })),
+    );
+  } else {
+    setEvents([]);
+  }
 };
 
 const Resource = (props: any) => {
@@ -158,11 +161,11 @@ const Resource = (props: any) => {
 
   // 새로고침 함수
   const refreshReservations = useCallback(
-    (date?: Date) => {
+    async (date?: Date) => {
       if (!studyrooms || studyrooms.length === 0) return;
       const resourceIds = resources.map((res) => res.resourceId);
       const targetDate = date || currentDate;
-      getReservations(targetDate, targetDate, resourceIds, setEvents);
+      await getReservations(targetDate, targetDate, resourceIds, setEvents);
     },
     [studyrooms, resources, currentDate],
   );
