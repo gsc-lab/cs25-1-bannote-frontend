@@ -30,6 +30,19 @@ interface GroupItemProps {
   onBookmarkToggle: (group_id: string, status: boolean) => void;
 }
 
+// // HEXカラーから明るさを計算
+// const getBrightness = (hex: string) => {
+//   const c = hex.replace('#', '');
+
+//   const r = parseInt(c.substring(0, 2), 16);
+//   const g = parseInt(c.substring(2, 4), 16);
+//   const b = parseInt(c.substring(4, 6), 16);
+
+//   // perceived brightness calculation
+//   return (0.299 * r + 0.587 * g + 0.114 * b);
+// };
+
+
 export const GroupItem: React.FC<GroupItemProps> = ({
   data,
   onBookmarkToggle,
@@ -73,13 +86,33 @@ export const GroupItem: React.FC<GroupItemProps> = ({
             boxShadow: "0 4px 12px rgba(23,44,102,0.2)",
           }}
         >
-          {React.cloneElement(getIconByGroup(data.tags ? data.tags : []), {
+          {/* {React.cloneElement(getIconByGroup(data.tags ? data.tags : []), {
             sx: {
               fontSize: 26,
               color:
                 data.color_default.toLowerCase() === "#172c66"
                   ? "#b6c4e9"
                   : "#2e4480",
+            },
+          })} */}
+          {React.cloneElement(getIconByGroup(data.tags ? data.tags : []), {
+            sx: {
+              fontSize: 26,
+              color: (() => {
+                const getBrightness = (hex: string) => {
+                  const c = hex.replace("#", "");
+                  const r = parseInt(c.substring(0, 2), 16);
+                  const g = parseInt(c.substring(2, 4), 16);
+                  const b = parseInt(c.substring(4, 6), 16);
+                  return 0.299 * r + 0.587 * g + 0.114 * b;
+                };
+
+                const brightness = getBrightness(data.color_default);
+
+                if (brightness < 80) return "#ffffff";   // 背景が暗い時は白
+                if (brightness < 150) return "#b6c4e9";  // 中間の時は明るめ色
+                return "#2e4480";                        // 明るい背景なら濃い色
+              })(),
             },
           })}
         </Box>
