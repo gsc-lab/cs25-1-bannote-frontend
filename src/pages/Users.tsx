@@ -178,7 +178,15 @@ export const UserList = () => {
 // =================================================
 export const UserEdit = () => {
   return (
-    // <Edit>
+    <Edit
+      component="div"
+      // transform={transform}
+        sx={{
+          backgroundColor: 'transparent',
+          boxShadow: 'none',
+          padding: 0
+        }}
+    >
       <Card sx={{ maxWidth: 700, margin: "24px auto", borderRadius: 4, p: 2, boxShadow: 6 }}>
         <CardContent>
           <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
@@ -201,6 +209,7 @@ export const UserEdit = () => {
           </SimpleForm>
         </CardContent>
       </Card>
+    </Edit> 
   );
 };
 
@@ -209,7 +218,15 @@ export const UserEdit = () => {
 // =================================================
 export const UserCreate = () => {
   return (
-    // <Create>
+    <Create
+      component="div"
+      // transform={transform}
+        sx={{
+          backgroundColor: 'transparent',
+          boxShadow: 'none',
+          padding: 0
+        }}
+    >
       <Card sx={{ maxWidth: 700, margin: "24px auto", borderRadius: 4, p: 2, boxShadow: 6 }}>
         <CardContent>
           <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
@@ -232,5 +249,6 @@ export const UserCreate = () => {
           </SimpleForm>
         </CardContent>
       </Card>
+     </Create> 
   );
 };

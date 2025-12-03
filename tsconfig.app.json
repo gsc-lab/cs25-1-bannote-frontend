@@ -23,5 +23,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/pages", "server.js"]
+  "include": ["src", "src/pages", "src/components/schedule/server.js"]
 }

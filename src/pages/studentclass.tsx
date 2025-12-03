@@ -107,7 +107,15 @@ const StudentClassToolbar = () => {
 
 export const StudentClassEdit = () => {
   return (
-    // <Edit>
+    <Edit
+      component="div"
+      // transform={transform}
+        sx={{
+          backgroundColor: 'transparent',
+          boxShadow: 'none',
+          padding: 0
+        }}
+    >
       <Card
         sx={{
           maxWidth: 800,
@@ -165,13 +173,22 @@ export const StudentClassEdit = () => {
           </Grid>
         </SimpleForm>
       </Card>
+     </Edit> 
   );
 };
 
 
 export const StudentClassCreate = () => {
   return (
-    // <Create>
+    <Create
+      component="div"
+      // transform={transform}
+        sx={{
+          backgroundColor: 'transparent',
+          boxShadow: 'none',
+          padding: 0
+        }}
+    >
       <Card
         sx={{
           maxWidth: 800,
@@ -228,6 +245,6 @@ export const StudentClassCreate = () => {
           </Grid>
         </SimpleForm>
       </Card>
-
+    </Create>
   );
 };

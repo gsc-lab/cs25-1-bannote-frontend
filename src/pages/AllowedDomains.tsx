@@ -90,7 +90,15 @@ export const AllowedDomainCreate = () => {
   });
 
   return (
-    // <Create transform={transform}>
+    <Create 
+      component="div"
+      transform={transform}
+        sx={{
+          backgroundColor: 'transparent',
+          boxShadow: 'none',
+          padding: 0
+  }}
+    >
       <Card sx={{ maxWidth: 650, margin: "24px auto", borderRadius: 4, p: 3, boxShadow: 6 }}>
         <CardContent>
           <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
@@ -117,5 +125,6 @@ export const AllowedDomainCreate = () => {
           </SimpleForm>
         </CardContent>
       </Card>
+    </Create> 
   );
 };

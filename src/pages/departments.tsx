@@ -1,6 +1,6 @@
 // src/pages/departments.tsx
 import {
-  // Create,
+  Create,
   Datagrid,
   DeleteButton,
   Edit,
@@ -78,7 +78,15 @@ export const DepartmentList = () => (
 
 // =================== EDIT ===================
 export const DepartmentEdit = () => (
-  // <Edit>
+  <Edit
+    component="div"
+    // transform={transform}
+      sx={{
+        backgroundColor: 'transparent',
+        boxShadow: 'none',
+        padding: 0
+      }}
+  >
     <Card sx={{ maxWidth: 650, margin: "24px auto", borderRadius: 4, p: 2, boxShadow: 6 }}>
       <CardContent>
         <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
@@ -101,12 +109,21 @@ export const DepartmentEdit = () => (
         </SimpleForm>
       </CardContent>
     </Card>
-  // </Edit>
+ </Edit>
 );
 
 // =================== CREATE ===================
+
 export const DepartmentCreate = () => (
-  // <Create sx={{backgroundColor:"#1546"}}>
+  <Create
+    component="div"
+    // transform={transform}
+      sx={{
+        backgroundColor: 'transparent',
+        boxShadow: 'none',
+        padding: 0
+      }}
+  >
     <Card sx={{ maxWidth: 650, margin: "24px auto", borderRadius: 4, p: 2, boxShadow: 6 }}>
       <CardContent>
         <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
@@ -129,8 +146,9 @@ export const DepartmentCreate = () => (
         </SimpleForm>
       </CardContent>
     </Card>
-  // </Create>
+  </Create>
 );
+
 
 // =================== Custom Buttons ===================
 const CustomToolbar = () => {
