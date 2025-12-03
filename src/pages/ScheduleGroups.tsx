@@ -137,7 +137,16 @@ export const ScheduleGroupsEdit = () => {
   };
 
   return (
-    <Edit transform={transform} mutationMode="pessimistic">
+    <Edit 
+      transform={transform} 
+      mutationMode="pessimistic"
+      component="div"
+        sx={{
+          backgroundColor: 'transparent',
+          boxShadow: 'none',
+          padding: 0
+        }}
+    >
       <Card
         sx={{
           maxWidth: 800,
@@ -200,7 +209,15 @@ export const ScheduleGroupsEdit = () => {
 
 export const ScheduleGroupsCreate = () => {
   return (
-    <Create>
+    <Create
+      component="div"
+      // transform={transform}
+        sx={{
+          backgroundColor: 'transparent',
+          boxShadow: 'none',
+          padding: 0
+    }}
+    >
       <Card
         sx={{
           maxWidth: 800,

@@ -45,7 +45,16 @@ export const TagsList = () => (
 
 // =================== CREATE ===================
 export const TagsCreate = () => (
-  <Create sx={{ backgroundColor: "#1546" }}>
+  <Create 
+    component="div"
+    sx={{ 
+      // backgroundColor: "#1546" 
+      backgroundColor: 'transparent',
+      boxShadow: 'none',
+      padding: 0
+
+    }}
+  >
     <Card
       sx={{
         maxWidth: 650,
