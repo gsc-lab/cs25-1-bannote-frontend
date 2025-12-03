@@ -139,7 +139,11 @@ export const GroupItem: React.FC<GroupItemProps> = ({
                   textOverflow: "ellipsis",
                 }}
               >
-                {data.group_name}
+                {/* {data.group_name} */}
+                {data.group_name.length > 12
+                  ? `${data.group_name.slice(0, 10)}...`
+                  : data.group_name}
+
               </Typography>
 
               <Box sx={{ display: "flex", gap: 0.5 }}>
