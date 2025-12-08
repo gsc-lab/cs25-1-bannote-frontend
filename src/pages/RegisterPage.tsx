@@ -204,7 +204,7 @@ export const RegisterPage = () => {
       const result = await response.json();
       console.log("送信成功:", result);
       setTimeout(() => {
-        window.location.href = `${apiUrl}/`;
+        window.location.href = `/`;
       }, 1000);
     } catch (err) {
       console.error("送信失敗:", err);

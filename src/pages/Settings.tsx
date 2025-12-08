@@ -19,50 +19,65 @@ import EmailIcon from "@mui/icons-material/Email";
 import SchoolIcon from "@mui/icons-material/School";
 import BadgeIcon from "@mui/icons-material/Badge";
 import PersonIcon from "@mui/icons-material/Person";
-import { useLocation } from "react-router-dom";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const navy = "#172C66";
 const lightGray = "#F9FAFB";
 
-interface SettingsProps {
-  userInfo?: {
-    email: string;
-    family_name: string;
-    given_name: string;
-    picture: string;
-    role: string;
-    department?: string;
-    className?: string;
-    studentNumber?: string;
-    statusMsg?: string;
-  };
-}
-
 const apiUrl = import.meta.env.VITE_API_URL;
 
-const Settings = (props: SettingsProps) => {
-  const location = useLocation();
-  const passedUserInfo = location.state?.userInfo as SettingsProps["userInfo"];
+const Settings = () => {
+  /** ⭐ localStorage からユーザーデータを読み込む */
+  const localUser = (() => {
+    try {
+      const data = localStorage.getItem("user");
+      return data ? JSON.parse(data) : null;
+    } catch (e) {
+      console.error("localStorage user parse error:", e);
+      return null;
+    }
+  })();
 
-  const user = passedUserInfo || props.userInfo || {
-    email: "",
+  /** ⭐ localStorage のデータをベースに user を作成 */
+  const user = localUser || {
     family_name: "",
     given_name: "",
-    picture: "",
-    role: "",
-    department: "",
-    className: "",
-    studentNumber: "",
-    statusMsg: "",
+    profile_image_url: "",
+    user_email: "",
+    user_type: "",
+    user_code: "",
+    bio: "",
   };
 
-  const [profileImage, setProfileImage] = useState(user.picture);
+  const convertUserTypeToKorean = (type: string | number) => {
+    switch (type) {
+      case "USER_TYPE_STUDENT":
+      case 1:
+        return "학생";
+      case "USER_TYPE_EMPLOYEE":
+      case 2:
+        return "교직원";
+      case "USER_TYPE_SERVICE":
+      case 3:
+        return "서비스 계정";
+      case "USER_TYPE_OTHER":
+      case 4:
+        return "기타";
+      default:
+        return "미정";
+    }
+  };
+
+
+
+  /** ⭐ 各 state に値をセット */
+  const [profileImage, setProfileImage] = useState(user.profile_image_url);
   const [lastName, setLastName] = useState(user.family_name);
   const [firstName, setFirstName] = useState(user.given_name);
-  const [statusMsg, setStatusMsg] = useState(user.statusMsg);
-  const [department, setDepartment] = useState(user.department);
-  const [className, setClassName] = useState(user.className);
-  const [studentNumber, setStudentNumber] = useState(user.studentNumber);
+  const [statusMsg, setStatusMsg] = useState(user.bio || "");
+  const [department, setDepartment] = useState("");
+  const [className, setClassName] = useState("");
+  const [studentNumber, setStudentNumber] = useState(user.user_code);
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -70,13 +85,14 @@ const Settings = (props: SettingsProps) => {
 
   const handleSnackbarClose = () => setSnackbarOpen(false);
 
+  /** ⭐ 更新ボタン押したときの処理 */
   const handleSave = async () => {
     try {
       const payload = {
         family_name: lastName,
         given_name: firstName,
         profile_image_url: profileImage,
-        statusMsg,
+        bio: statusMsg,
         department,
         className,
         studentNumber,
@@ -89,6 +105,18 @@ const Settings = (props: SettingsProps) => {
       });
 
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+      /** ⭐ localStorage の user も更新 */
+      const updatedUser = {
+        ...user,
+        family_name: lastName,
+        given_name: firstName,
+        profile_image_url: profileImage,
+        bio: statusMsg,
+        user_code: studentNumber,
+      };
+
+      localStorage.setItem("user", JSON.stringify(updatedUser));
 
       setSnackbarSeverity("success");
       setSnackbarMessage("프로필 정보가 성공적으로 업데이트되었습니다!");
@@ -107,7 +135,7 @@ const Settings = (props: SettingsProps) => {
         elevation={3}
         sx={{
           width: "90%",
-          maxWidth: 1100,
+          maxWidth: 1000,
           borderRadius: 4,
           p: 4,
           display: "flex",
@@ -155,38 +183,10 @@ const Settings = (props: SettingsProps) => {
           <Divider sx={{ width: "80%", my: 2 }} />
 
           <Stack spacing={2} sx={{ width: "100%" }}>
-            <DetailItem
-              icon={<EmailIcon color="primary" />}
-              label="이메일"
-              value={user.email}
-              setSnackbarMessage={setSnackbarMessage}
-              setSnackbarOpen={setSnackbarOpen}
-              setSnackbarSeverity={setSnackbarSeverity}
-            />
-            <DetailItem
-              icon={<SchoolIcon color="primary" />}
-              label="학과 / 반"
-              value={`${department || ""} / ${className || ""}`}
-              setSnackbarMessage={setSnackbarMessage}
-              setSnackbarOpen={setSnackbarOpen}
-              setSnackbarSeverity={setSnackbarSeverity}
-            />
-            <DetailItem
-              icon={<PersonIcon color="primary" />}
-              label="역할"
-              value={user.role}
-              setSnackbarMessage={setSnackbarMessage}
-              setSnackbarOpen={setSnackbarOpen}
-              setSnackbarSeverity={setSnackbarSeverity}
-            />
-            <DetailItem
-              icon={<BadgeIcon color="primary" />}
-              label="학생 번호"
-              value={studentNumber || ""}
-              setSnackbarMessage={setSnackbarMessage}
-              setSnackbarOpen={setSnackbarOpen}
-              setSnackbarSeverity={setSnackbarSeverity}
-            />
+            <DetailItem icon={<EmailIcon color="primary" />} label="이메일" value={user.user_email} />
+            <DetailItem icon={<SchoolIcon color="primary" />} label="학과 / 반" value={`${department} / ${className}`} />
+            <DetailItem icon={<PersonIcon color="primary" />} label="역할" value={convertUserTypeToKorean(user.user_type)} />
+            <DetailItem icon={<BadgeIcon color="primary" />} label="학생 번호" value={studentNumber} />
           </Stack>
         </Card>
 
@@ -205,11 +205,13 @@ const Settings = (props: SettingsProps) => {
           <Typography variant="h5" sx={{ color: navy, fontWeight: 700, mb: 3 }}>
             프로필 정보 수정
           </Typography>
+
           <Stack spacing={3}>
             <Box sx={{ display: "flex", gap: 2 }}>
               <TextField fullWidth label="성" value={lastName} onChange={(e) => setLastName(e.target.value)} />
               <TextField fullWidth label="이름" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
             </Box>
+
             <TextField
               fullWidth
               label="상태 메시지"
@@ -220,6 +222,7 @@ const Settings = (props: SettingsProps) => {
               inputProps={{ maxLength: 125 }}
             />
           </Stack>
+
           <TextField fullWidth label="학생 번호" value={studentNumber} onChange={(e) => setStudentNumber(e.target.value)} sx={{ mt: 2 }} />
           <TextField fullWidth label="학과" value={department} onChange={(e) => setDepartment(e.target.value)} sx={{ mt: 2 }} />
           <TextField fullWidth label="반" value={className} onChange={(e) => setClassName(e.target.value)} sx={{ mt: 2 }} />
@@ -249,21 +252,17 @@ const Settings = (props: SettingsProps) => {
   );
 };
 
-interface DetailItemProps {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-  setSnackbarMessage: React.Dispatch<React.SetStateAction<string>>;
-  setSnackbarOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setSnackbarSeverity: React.Dispatch<React.SetStateAction<"success" | "error">>;
-}
+const DetailItem = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => {
+  const [copied, setCopied] = useState(false);
 
-const DetailItem = ({ icon, label, value, setSnackbarMessage, setSnackbarOpen, setSnackbarSeverity }: DetailItemProps) => {
-  const handleCopy = () => {
-    navigator.clipboard.writeText(value);
-    setSnackbarMessage(`${label} 복사 완료: ${value}`);
-    setSnackbarSeverity("success");
-    setSnackbarOpen(true);
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 500);
+    } catch (e) {
+      console.error("Copy failed:", e);
+    }
   };
 
   return (
@@ -274,21 +273,45 @@ const DetailItem = ({ icon, label, value, setSnackbarMessage, setSnackbarOpen, s
           {label}
         </Typography>
       </Stack>
-      <Typography
+
+      <Box
+        onClick={handleCopy}
         sx={{
+          position: "relative",
           p: 1.2,
           border: `1px solid ${lightGray}`,
           borderRadius: 2,
           background: "#FAFAFA",
           cursor: "pointer",
-          "&:hover": { backgroundColor: "#F0F0F0" },
+          textAlign: "center",
         }}
-        onClick={handleCopy}
       >
-        {value}
-      </Typography>
+        {/* ⭐ 中央にくる値テキスト */}
+        <Typography sx={{ fontSize: 16 }}>{value}</Typography>
+
+        {/* ⭐ 右側に固定されるアイコン / 「복사됨」 */}
+        <Box
+          sx={{
+            position: "absolute",
+            right: 10,
+            top: "50%",
+            transform: "translateY(-50%)",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          {copied ? (
+            <Typography sx={{ fontSize: 12, color: navy }}>복사됨</Typography>
+          ) : (
+            <ContentCopyIcon fontSize="small" sx={{ opacity: 0.6 }} />
+          )}
+        </Box>
+      </Box>
     </Box>
   );
 };
+
+
+
 
 export default Settings;
