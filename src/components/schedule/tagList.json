@@ -1,0 +1,84 @@
+{
+  "tag_list_response": {
+    "tags": [
+      {
+        "tag_id": "1",
+        "name": "1학년",
+        "created_by": "1",
+        "created_at": "2025-11-11T09:02:52.343Z"
+      },
+      {
+        "tag_id": "2",
+        "name": "2학년",
+        "created_by": "1",
+        "created_at": "2025-11-11T09:02:36.021Z"
+      },
+      {
+        "tag_id": "3",
+        "name": "3학년",
+        "created_by": "1",
+        "created_at": "2025-11-09T12:41:05.113Z"
+      },
+      {
+        "tag_id": "4",
+        "name": "글로벌시스템융합과",
+        "created_by": "1",
+        "created_at": "2025-11-09T12:40:34.978Z"
+      },
+      {
+        "tag_id": "5",
+        "name": "오늘은뭐할과",
+        "created_by": "1",
+        "created_at": "2025-11-07T13:56:18.864Z"
+      },
+      {
+        "tag_id": "6",
+        "name": "특강",
+        "created_by": "1",
+        "created_at": "2025-11-06T12:58:21.821Z"
+      },
+      {
+        "tag_id": "7",
+        "name": "정규",
+        "created_by": "1",
+        "created_at": "2025-11-06T12:58:14.270Z"
+      },
+      {
+        "tag_id": "8",
+        "name": "이벤트",
+        "created_by": "1",
+        "created_at": "2025-11-06T12:58:14.271Z"
+      },
+      {
+        "tag_id": "9",
+        "name": "한국어",
+        "created_by": "1",
+        "created_at": "2025-11-06T12:58:14.272Z"
+      },
+      {
+        "tag_id": "10",
+        "name": "일본어",
+        "created_by": "1",
+        "created_at": "2025-11-06T12:58:14.273Z"
+      },
+      {
+        "tag_id": "11",
+        "name": "전공",
+        "created_by": "1",
+        "created_at": "2025-11-06T12:58:14.274Z"
+      },
+      {
+        "tag_id": "12",
+        "name": "청소",
+        "created_by": "1",
+        "created_at": "2025-11-06T12:58:14.275Z"
+      },
+      {
+        "tag_id": "13",
+        "name": "스터디룸",
+        "created_by": "1",
+        "created_at": "2025-11-06T12:58:14.276Z"
+      }
+    ]
+  }
+}
